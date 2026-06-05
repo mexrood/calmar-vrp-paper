@@ -1,0 +1,50 @@
+{
+  "openedAt": "2026-06-05T23:08:15.966Z",
+  "expiry": 1782460800000,
+  "expiryDate": "2026-06-26",
+  "spotAtOpen": 61589.83,
+  "legs": [
+    {
+      "name": "BTC-26JUN26-62000-C",
+      "type": "call",
+      "strike": 62000,
+      "side": "short",
+      "qty": 0.1,
+      "entryFillBTC": 0.0415,
+      "entryIV": 47.46
+    },
+    {
+      "name": "BTC-26JUN26-62000-P",
+      "type": "put",
+      "strike": 62000,
+      "side": "short",
+      "qty": 0.1,
+      "entryFillBTC": 0.047,
+      "entryIV": 47.46
+    },
+    {
+      "name": "BTC-26JUN26-45000-P",
+      "type": "put",
+      "strike": 45000,
+      "side": "long",
+      "qty": 0.1,
+      "entryFillBTC": 0.0033,
+      "entryIV": 80.31
+    }
+  ],
+  "perpQtyBTC": 0.0047839999999999905,
+  "perpEntry": 61590.63,
+  "realizedHedgePnlUSD": 0.0037743999999794086,
+  "premiumCollectedUSD": 524.7453516,
+  "history": [
+    {
+      "ts": "2026-06-05T23:08:21.733Z",
+      "spot": 61590.63,
+      "optionPnlUSD": -8.006781899999954,
+      "hedgePnlUSD": 0.0037743999999794086,
+      "equity": 9991.9969925,
+      "netDeltaBTC": -0.0047839999999999905,
+      "dte": 20.369199282407408
+    }
+  ]
+}

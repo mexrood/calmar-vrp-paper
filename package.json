@@ -1,0 +1,15 @@
+{
+  "name": "calmar-vrp-paper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Virtual short-vol (VRP) book on live Deribit quotes. Ticks hourly via GitHub Actions.",
+  "scripts": {
+    "open": "tsx vrp-paper.ts open",
+    "tick": "tsx vrp-paper.ts tick",
+    "status": "tsx vrp-paper.ts status"
+  },
+  "dependencies": {
+    "tsx": "^4.19.0"
+  }
+}

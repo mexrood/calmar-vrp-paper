@@ -1,0 +1,43 @@
+name: vrp-tick
+
+# Marks the virtual VRP book to market every hour and commits the updated state.
+# Scheduled cron on GitHub Actions is best-effort (may be delayed under load).
+on:
+  schedule:
+    - cron: "0 * * * *" # every hour, on the hour (UTC)
+  workflow_dispatch: {}   # allow manual run from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vrp-tick
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        run: npm install --no-audit --no-fund
+
+      - name: Tick the book
+        run: npm run tick
+
+      - name: Commit updated state
+        run: |
+          git config user.name "vrp-bot"
+          git config user.email "vrp-bot@users.noreply.github.com"
+          git add data/vrp-paper.json
+          if git diff --staged --quiet; then
+            echo "no state change"
+          else
+            git commit -m "tick: mark VRP book $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi

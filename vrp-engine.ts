@@ -21,6 +21,13 @@ export const CAPITAL = 10_000;
 export const SIZE_BTC = 0.1;
 export const TARGET_DTE = 30;
 export const HEDGE_OTM = 0.75;
+const PERP_COST = 0.0006;     // perp taker fee + slippage per re-hedge
+const OPT_FEE_BTC = 0.0003;   // Deribit option fee: 0.03% of underlying per contract
+const OPT_FEE_CAP = 0.125;    // capped at 12.5% of the option premium
+// round-trip Deribit option fee (open + settle) for the 3-leg book, in BTC
+function optionFeesBTC(legs: Leg[]): number {
+  return 2 * legs.reduce((a, l) => a + Math.min(OPT_FEE_BTC, OPT_FEE_CAP * l.entryFillBTC) * l.qty, 0);
+}
 
 async function api<T>(path: string): Promise<T | null> {
   for (let a = 0; a < 4; a++) {
@@ -48,6 +55,7 @@ export interface PaperState {
   legs: Leg[];
   perpQtyBTC: number; perpEntry: number; realizedHedgePnlUSD: number;
   premiumCollectedUSD: number;
+  feesUSD: number;   // cumulative: Deribit option fee + perp re-hedge costs
   history: Array<{ ts: string; spot: number; optionPnlUSD: number; hedgePnlUSD: number; equity: number; netDeltaBTC: number; dte: number }>;
 }
 
@@ -82,9 +90,10 @@ export async function open(): Promise<PaperState> {
   const premiumCollectedUSD = (legs[0].entryFillBTC + legs[1].entryFillBTC - legs[2].entryFillBTC) * SIZE_BTC * px;
 
   const netDelta = -(tc.greeks?.delta ?? 0.5) * SIZE_BTC - (tp.greeks?.delta ?? -0.5) * SIZE_BTC + (th.greeks?.delta ?? -0.04) * SIZE_BTC;
+  const feesUSD = optionFeesBTC(legs) * px + Math.abs(netDelta) * px * PERP_COST; // option fee + initial hedge fill
   const state: PaperState = {
     openedAt: new Date().toISOString(), expiry, expiryDate: new Date(expiry).toISOString().slice(0, 10), spotAtOpen: px,
-    legs, perpQtyBTC: -netDelta, perpEntry: px, realizedHedgePnlUSD: 0, premiumCollectedUSD,
+    legs, perpQtyBTC: -netDelta, perpEntry: px, realizedHedgePnlUSD: 0, premiumCollectedUSD, feesUSD,
     history: [],
   };
   save(state);
@@ -110,11 +119,18 @@ export async function tick(): Promise<{ state: PaperState; row: PaperState["hist
 
   const perpPnl = state.perpQtyBTC * (px - state.perpEntry);
   state.realizedHedgePnlUSD += perpPnl;
-  state.perpQtyBTC = -netDeltaBTC;
+
+  // backfill fees for a position opened before fee-accounting existed
+  if (state.feesUSD == null) {
+    state.feesUSD = optionFeesBTC(state.legs) * state.spotAtOpen + Math.abs(state.perpQtyBTC) * state.spotAtOpen * PERP_COST;
+  }
+  const newPerp = -netDeltaBTC;
+  state.feesUSD += Math.abs(newPerp - state.perpQtyBTC) * px * PERP_COST; // re-hedge transaction cost
+  state.perpQtyBTC = newPerp;
   state.perpEntry = px;
 
   const hedgePnlUSD = state.realizedHedgePnlUSD;
-  const equity = CAPITAL + optionPnlUSD + hedgePnlUSD;
+  const equity = CAPITAL + optionPnlUSD + hedgePnlUSD - state.feesUSD;
   const row = { ts: new Date().toISOString(), spot: px, optionPnlUSD, hedgePnlUSD, equity, netDeltaBTC, dte };
   state.history.push(row);
   save(state);

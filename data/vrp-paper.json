@@ -32,9 +32,9 @@
       "entryIV": 80.31
     }
   ],
-  "perpQtyBTC": -0.004763999999999995,
-  "perpEntry": 60760.33,
-  "realizedHedgePnlUSD": -2.9493421000000017,
+  "perpQtyBTC": -0.004623000000000007,
+  "perpEntry": 60832.1,
+  "realizedHedgePnlUSD": -3.291254379999986,
   "premiumCollectedUSD": 524.7453516,
   "history": [
     {
@@ -63,6 +63,15 @@
       "equity": 9974.569335799999,
       "netDeltaBTC": 0.004763999999999995,
       "dte": 20.187860462962963
+    },
+    {
+      "ts": "2026-06-06T06:52:59.472Z",
+      "spot": 60832.1,
+      "optionPnlUSD": -19.466271999999986,
+      "hedgePnlUSD": -3.291254379999986,
+      "equity": 9977.242473620001,
+      "netDeltaBTC": 0.004623000000000007,
+      "dte": 20.04654064814815
     }
   ]
 }

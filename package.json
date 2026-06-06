@@ -8,7 +8,8 @@
     "open": "tsx vrp-paper.ts open",
     "tick": "tsx vrp-paper.ts tick",
     "status": "tsx vrp-paper.ts status",
-    "dash": "tsx serve.ts"
+    "dash": "tsx serve.ts",
+    "server": "tsx server.ts"
   },
   "dependencies": {
     "tsx": "^4.19.0"

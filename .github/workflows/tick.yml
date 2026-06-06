@@ -1,11 +1,10 @@
 name: vrp-tick
 
-# Marks the virtual VRP book to market every hour and commits the updated state.
-# Scheduled cron on GitHub Actions is best-effort (may be delayed under load).
+# DISABLED schedule: the live book now ticks every 15 min on Fly.io (always-on
+# process, see server.ts + DEPLOY.md). GitHub cron was throttled to ~every 3h and
+# would diverge from the Fly volume's state, so we keep this manual-only as a backup.
 on:
-  schedule:
-    - cron: "0 * * * *" # every hour, on the hour (UTC)
-  workflow_dispatch: {}   # allow manual run from the Actions tab
+  workflow_dispatch: {}   # manual backup only — Fly is the source of truth
 
 permissions:
   contents: write

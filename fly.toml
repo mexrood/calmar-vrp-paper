@@ -1,0 +1,28 @@
+# Fly.io config — always-on VRP paper book (ticks every 15 min) + dashboard.
+# Deploy: see DEPLOY.md. App name may need to be unique; flyctl will offer to rename.
+app = "calmar-vrp-paper"
+primary_region = "ams"   # Amsterdam — close to Deribit's EU infra
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  VRP_STATE = "/data/vrp-paper.json"
+  TICK_MS = "900000"   # 15 minutes
+
+# Persistent volume so the tick history survives restarts/redeploys.
+[mounts]
+  source = "vrp_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false   # MUST stay on — it's a ticking process, not on-demand
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

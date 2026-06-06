@@ -1,10 +1,11 @@
 name: vrp-tick
 
-# DISABLED schedule: the live book now ticks every 15 min on Fly.io (always-on
-# process, see server.ts + DEPLOY.md). GitHub cron was throttled to ~every 3h and
-# would diverge from the Fly volume's state, so we keep this manual-only as a backup.
+# Ticked by an EXTERNAL scheduler (cron-job.org) hitting the workflow_dispatch API
+# every 15 min — punctual, unlike GitHub's throttled built-in cron. Each run marks
+# the book and commits data/vrp-paper.json. GitHub Pages serves the dashboard from
+# the same file. See SETUP-CRON.md.
 on:
-  workflow_dispatch: {}   # manual backup only — Fly is the source of truth
+  workflow_dispatch: {}
 
 permissions:
   contents: write

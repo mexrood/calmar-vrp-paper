@@ -1,10 +1,13 @@
 name: vrp-tick
 
-# Ticked by an EXTERNAL scheduler (cron-job.org) hitting the workflow_dispatch API
-# every 15 min — punctual, unlike GitHub's throttled built-in cron. Each run marks
-# the book and commits data/vrp-paper.json. GitHub Pages serves the dashboard from
-# the same file. See SETUP-CRON.md.
+# Two triggers so the book NEVER freezes:
+#   • schedule        — GitHub's built-in cron, the always-on baseline (throttled to
+#                        ~hourly under load, but never dead). Keeps ticking with zero setup.
+#   • workflow_dispatch — for manual runs AND an optional external scheduler
+#                        (cron-job.org) if you want punctual 15-min ticks. See SETUP-CRON.md.
 on:
+  schedule:
+    - cron: "*/15 * * * *"
   workflow_dispatch: {}
 
 permissions:

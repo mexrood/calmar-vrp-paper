@@ -64,6 +64,20 @@
   }
   .delta .sub { font-size: clamp(0.7rem,1vw,0.9rem); color: var(--meta); letter-spacing: 0.04em; }
 
+  /* premium capture */
+  .premium { margin-top: clamp(1.6rem,4vw,2.6rem); }
+  .premium-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.7rem; }
+  .premium-head .k { font-family:"Syne",sans-serif; font-weight:700; font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--meta); }
+  .premium-head .pmeta { font-size:0.72rem; color:var(--meta); font-variant-numeric:tabular-nums; }
+  .premium-head .pmeta b { color:var(--text); }
+  .ptrack { position:relative; height:3px; background:var(--line); }
+  .pfill { position:absolute; left:0; top:0; height:100%; background:var(--accent); transition:width .6s cubic-bezier(0.16,1,0.3,1); }
+  .pmark { position:absolute; top:50%; width:11px; height:11px; border-radius:50%; background:var(--accent); transform:translate(-50%,-50%); transition:left .6s cubic-bezier(0.16,1,0.3,1); box-shadow:0 0 0 4px var(--bg); }
+  .premium-foot { display:flex; justify-content:space-between; align-items:baseline; margin-top:0.7rem; gap:1rem; }
+  .premium-foot .end { font-size:0.62rem; color:var(--meta); letter-spacing:0.08em; white-space:nowrap; }
+  .status { flex:1; text-align:center; font-size:clamp(0.74rem,1.1vw,0.92rem); color:var(--text); line-height:1.4; }
+  @media (max-width:640px){ .premium-foot{flex-wrap:wrap;} .status{order:-1;flex-basis:100%;margin-bottom:0.4rem;} }
+
   /* chart */
   .chart-wrap { position: relative; margin-top: clamp(1.5rem,4vw,3rem); }
   svg.chart { width: 100%; height: clamp(220px, 34vh, 420px); display: block; overflow: visible; }
@@ -78,6 +92,11 @@
   }
   .sec-num { font-family:"Syne",sans-serif; font-weight:700; color: var(--meta); font-size: 0.8rem; letter-spacing:0.1em; }
   .sec-title { font-family:"Syne",sans-serif; font-weight:700; font-size: clamp(1.2rem,2.4vw,1.9rem); letter-spacing: -0.02em; }
+  .log > summary { list-style:none; cursor:pointer; display:flex; align-items:baseline; gap:1rem; user-select:none; }
+  .log > summary::-webkit-details-marker { display:none; }
+  .log > summary .log-hint { color:var(--meta); font-size:0.72rem; }
+  .log > summary:hover .log-hint { color:var(--text); }
+  .log[open] > summary .log-hint::after { content:" (open)"; }
 
   /* stats grid */
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); }
@@ -156,6 +175,10 @@ function chartSVG(history){
   </svg>`;
 }
 
+const TZ = "Europe/Chisinau";
+const fmtTime = (iso) => new Date(iso).toLocaleString("en-GB",{timeZone:TZ,day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).replace(",","");
+const fmtDate = (iso) => new Date(iso).toLocaleDateString("en-CA",{timeZone:TZ});
+
 function render(s){
   const h = s.history && s.history.length ? s.history[s.history.length-1] : null;
   const equity = h ? h.equity : CAPITAL;
@@ -167,6 +190,19 @@ function render(s){
   const dteH = h ? h.dte : (s.expiry - Date.now())/864e5;
   const opt = h ? h.optionPnlUSD : 0, hedge = h ? h.hedgePnlUSD : 0, delta = h ? h.netDeltaBTC : 0;
   const spot = h ? h.spot : s.spotAtOpen;
+
+  // premium capture + plain-language status
+  const premium = s.premiumCollectedUSD;
+  const capturedPct = pnl/premium*100;
+  const markPct = Math.max(0, Math.min(100, capturedPct));
+  const remaining = Math.max(0, premium - pnl);
+  const back = s.history && s.history.length > 6 ? s.history[s.history.length-7] : (s.history && s.history[0]) || h;
+  const movePct = (back && h) ? (spot/back.spot - 1)*100 : 0;
+  const calm = Math.abs(movePct) < 0.8;
+  const statusText = !h ? "Waiting for the first mark…"
+    : pnl < 0 ? `Costs booked up front — not capturing premium yet. ${calm ? "Calm: time-decay is starting to work." : `BTC moved ${movePct>=0?"+":""}${movePct.toFixed(1)}% — the hedge ate some; recovers if it settles.`}`
+    : calm ? `Market calm — earning time-decay. ~${fmtUSD(remaining)} of premium still to capture.`
+    : `BTC moved ${movePct>=0?"+":""}${movePct.toFixed(1)}% — gave some back to the hedge; recovers if it settles.`;
 
   const legRows = s.legs.map(l=>`
     <div class="leg-row">
@@ -180,7 +216,7 @@ function render(s){
   const ticks = (s.history||[]).slice(-14).reverse().map(r=>{
     const p = r.equity - CAPITAL; const cls = p>=0?"pos":"neg";
     return `<div class="tick-row">
-      <span class="muted">${r.ts.slice(5,16).replace("T"," ")}</span>
+      <span class="muted">${fmtTime(r.ts)}</span>
       <span class="num">$${Math.round(r.spot).toLocaleString()}</span>
       <span class="num ${cls}">${fmtUSD(p,true)}</span>
       <span class="num muted delta-col">Δ ${r.netDeltaBTC.toFixed(3)}</span>
@@ -194,8 +230,25 @@ function render(s){
       <div class="delta">
         <span>${fmtUSD(pnl,true)}</span>
         <span>${fmtPct(pct)}</span>
-        <span class="sub">${s.history.length} ticks · since ${s.openedAt.slice(0,10)}</span>
+        <span class="sub">${s.history.length} ticks · since ${fmtDate(s.openedAt)}</span>
       </div>
+
+      <div class="premium">
+        <div class="premium-head">
+          <span class="k">Premium capture · this is the goal</span>
+          <span class="pmeta"><b>${capturedPct>=0?capturedPct.toFixed(0):"0"}%</b> of ${fmtUSD(premium,true)} · ${dteH.toFixed(0)}d left</span>
+        </div>
+        <div class="ptrack">
+          <div class="pfill" style="width:${markPct}%"></div>
+          <div class="pmark" style="left:${markPct}%"></div>
+        </div>
+        <div class="premium-foot">
+          <span class="end">$0 · start</span>
+          <span class="status">${statusText}</span>
+          <span class="end">${fmtUSD(premium,true)} · max</span>
+        </div>
+      </div>
+
       <div class="chart-wrap">${chartSVG(s.history||[])}</div>
     </section>
 
@@ -218,11 +271,13 @@ function render(s){
     </section>
 
     <section class="block divider">
-      <div class="sec-head"><div class="sec-num">03</div><div class="sec-title">Tick history</div></div>
-      <div class="tick-row" style="border-top:none; color:var(--meta); font-family:Syne,sans-serif; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase;">
-        <span>Time · UTC</span><span>Spot</span><span>P&amp;L</span><span class="delta-col">Net Δ</span>
-      </div>
-      ${ticks || '<div class="muted" style="padding:1rem 0;">no ticks yet</div>'}
+      <details class="log">
+        <summary><span class="sec-num">03</span> <span class="sec-title">Tick log</span> <span class="log-hint">— show raw ticks (is it working?)</span></summary>
+        <div class="tick-row" style="border-top:none; color:var(--meta); font-family:Syne,sans-serif; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; margin-top:1.6rem;">
+          <span>Time · Chișinău</span><span>Spot</span><span>P&amp;L</span><span class="delta-col">Net Δ</span>
+        </div>
+        ${ticks || '<div class="muted" style="padding:1rem 0;">no ticks yet</div>'}
+      </details>
     </section>
 
     <footer class="divider">

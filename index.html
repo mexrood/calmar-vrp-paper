@@ -3,302 +3,195 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VRP Paper Book — Calmar</title>
+<title>VRP Multi-Asset — Calmar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --bg:    #0a0a0a;
-    --panel: #0f0f0e;
-    --text:  #f0ede8;
-    --meta:  #5a5a55;
-    --line:  rgba(240,237,232,0.12);
-    --up:    #6fbf86;
-    --down:  #d9544f;
-    --accent: var(--up);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { -webkit-font-smoothing: antialiased; }
-  body {
-    background: var(--bg); color: var(--text);
-    font-family: "Space Mono", monospace;
-    min-height: 100vh; overflow-x: hidden;
-  }
-  .canvas { padding-inline: clamp(1.25rem, 6vw, 5rem); }
+  :root{ --bg:#0a0a0a; --text:#f0ede8; --meta:#5a5a55; --line:rgba(240,237,232,0.12); --up:#6fbf86; --down:#d9544f; --accent:var(--up); }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--text);font-family:"Space Mono",monospace;min-height:100vh;overflow-x:hidden}
+  .canvas{padding-inline:clamp(1.25rem,6vw,5rem)}
+  nav{position:fixed;inset:0 0 auto 0;z-index:100;display:flex;justify-content:space-between;align-items:center;
+    padding:1.1rem clamp(1.25rem,6vw,5rem);font-family:"Syne",sans-serif;font-weight:700;font-size:clamp(0.62rem,0.85vw,0.78rem);
+    letter-spacing:0.14em;text-transform:uppercase;mix-blend-mode:difference}
+  nav .brand span{color:var(--meta)}
+  .status{display:flex;align-items:center;gap:0.55rem}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--up);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(111,191,134,0.45)}70%{box-shadow:0 0 0 8px rgba(111,191,134,0)}100%{box-shadow:0 0 0 0 rgba(111,191,134,0)}}
 
-  /* nav */
-  nav {
-    position: fixed; inset: 0 0 auto 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.1rem clamp(1.25rem, 6vw, 5rem);
-    font-family: "Syne", sans-serif; font-weight: 700;
-    font-size: clamp(0.62rem, 0.85vw, 0.78rem);
-    letter-spacing: 0.14em; text-transform: uppercase;
-    mix-blend-mode: difference;
-  }
-  nav .brand span { color: var(--meta); }
-  .status { display: flex; align-items: center; gap: 0.55rem; }
-  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--up);
-    box-shadow: 0 0 0 0 rgba(111,191,134,0.5); animation: pulse 2.4s infinite; }
-  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(111,191,134,0.45);} 70%{box-shadow:0 0 0 8px rgba(111,191,134,0);} 100%{box-shadow:0 0 0 0 rgba(111,191,134,0);} }
+  .hero{padding-top:clamp(6rem,16vh,11rem);padding-bottom:clamp(1.5rem,4vw,3rem)}
+  .hero .label{font-family:"Syne",sans-serif;font-weight:700;font-size:clamp(0.65rem,0.9vw,0.8rem);
+    letter-spacing:0.18em;text-transform:uppercase;color:var(--meta);display:flex;gap:1.2rem;align-items:baseline;margin-bottom:1.2rem;flex-wrap:wrap}
+  .hero .label b{color:var(--text)}
+  .equity{font-family:"Syne",sans-serif;font-weight:800;font-size:clamp(3rem,12vw,11rem);line-height:0.84;letter-spacing:-0.045em;font-variant-numeric:tabular-nums}
+  .delta{margin-top:1rem;font-size:clamp(1rem,2.6vw,2.1rem);font-weight:700;letter-spacing:-0.01em;color:var(--accent);display:flex;gap:1.4rem;align-items:baseline;flex-wrap:wrap}
+  .delta .sub{font-size:clamp(0.7rem,1vw,0.9rem);color:var(--meta);letter-spacing:0.04em}
+  .pstatus{margin-top:1.2rem;font-size:clamp(0.78rem,1.1vw,0.95rem);color:var(--text);line-height:1.5;max-width:62ch}
 
-  /* hero */
-  .hero { padding-top: clamp(6rem, 16vh, 11rem); padding-bottom: clamp(2rem, 5vw, 4rem); }
-  .hero .label {
-    font-family: "Syne", sans-serif; font-weight: 700;
-    font-size: clamp(0.65rem, 0.9vw, 0.8rem);
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--meta);
-    display: flex; gap: 1.2rem; align-items: baseline; margin-bottom: 1.2rem;
-  }
-  .hero .label b { color: var(--text); font-weight: 700; }
-  .equity {
-    font-family: "Syne", sans-serif; font-weight: 800;
-    font-size: clamp(3.4rem, 14vw, 13rem); line-height: 0.84;
-    letter-spacing: -0.045em; font-variant-numeric: tabular-nums;
-  }
-  .delta {
-    margin-top: 1rem; font-size: clamp(1rem, 2.6vw, 2.1rem);
-    font-weight: 700; letter-spacing: -0.01em; color: var(--accent);
-    display: flex; gap: 1.4rem; align-items: baseline; flex-wrap: wrap;
-  }
-  .delta .sub { font-size: clamp(0.7rem,1vw,0.9rem); color: var(--meta); letter-spacing: 0.04em; }
+  .chart-wrap{position:relative;margin-top:clamp(1.5rem,4vw,3rem)}
+  svg.chart{width:100%;height:clamp(180px,28vh,340px);display:block;overflow:visible}
+  .baseline-label{font-size:0.7rem;fill:var(--meta);font-family:"Space Mono",monospace}
 
-  /* premium capture */
-  .premium { margin-top: clamp(1.6rem,4vw,2.6rem); }
-  .premium-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.7rem; }
-  .premium-head .k { font-family:"Syne",sans-serif; font-weight:700; font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--meta); }
-  .premium-head .pmeta { font-size:0.72rem; color:var(--meta); font-variant-numeric:tabular-nums; }
-  .premium-head .pmeta b { color:var(--text); }
-  .ptrack { position:relative; height:3px; background:var(--line); }
-  .pfill { position:absolute; left:0; top:0; height:100%; background:var(--accent); transition:width .6s cubic-bezier(0.16,1,0.3,1); }
-  .pmark { position:absolute; top:50%; width:11px; height:11px; border-radius:50%; background:var(--accent); transform:translate(-50%,-50%); transition:left .6s cubic-bezier(0.16,1,0.3,1); box-shadow:0 0 0 4px var(--bg); }
-  .premium-foot { display:flex; justify-content:space-between; align-items:baseline; margin-top:0.7rem; gap:1rem; }
-  .premium-foot .end { font-size:0.62rem; color:var(--meta); letter-spacing:0.08em; white-space:nowrap; }
-  .status { flex:1; text-align:center; font-size:clamp(0.74rem,1.1vw,0.92rem); color:var(--text); line-height:1.4; }
-  @media (max-width:640px){ .premium-foot{flex-wrap:wrap;} .status{order:-1;flex-basis:100%;margin-bottom:0.4rem;} }
+  .divider{border-top:1px solid var(--line)}
+  section.block{padding-block:clamp(2.2rem,5vw,4rem)}
+  .sec-head{display:grid;grid-template-columns:3.5rem 1fr;gap:1.5rem;align-items:baseline;margin-bottom:2rem}
+  .sec-num{font-family:"Syne",sans-serif;font-weight:700;color:var(--meta);font-size:0.8rem;letter-spacing:0.1em}
+  .sec-title{font-family:"Syne",sans-serif;font-weight:700;font-size:clamp(1.2rem,2.4vw,1.9rem);letter-spacing:-0.02em}
 
-  /* chart */
-  .chart-wrap { position: relative; margin-top: clamp(1.5rem,4vw,3rem); }
-  svg.chart { width: 100%; height: clamp(220px, 34vh, 420px); display: block; overflow: visible; }
-  .baseline-label { font-size: 0.7rem; fill: var(--meta); font-family: "Space Mono", monospace; }
+  /* leaderboard */
+  .lb-row{display:grid;grid-template-columns:2rem 4rem 1fr 7rem 6rem;align-items:center;gap:1rem;
+    padding-block:1.1rem;border-top:1px solid var(--line);font-size:clamp(0.78rem,1vw,0.95rem)}
+  .lb-row:last-child{border-bottom:1px solid var(--line)}
+  .lb-rank{font-family:"Syne",sans-serif;font-weight:700;color:var(--meta);font-size:0.8rem}
+  .lb-sym{font-family:"Syne",sans-serif;font-weight:800;font-size:clamp(1rem,1.6vw,1.4rem);letter-spacing:-0.01em}
+  .lb-bar{position:relative;height:6px;background:var(--line)}
+  .lb-bar .fill{position:absolute;top:0;height:100%;transition:all .6s cubic-bezier(0.16,1,0.3,1)}
+  .lb-bar .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--meta);opacity:0.5}
+  .lb-pnl{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  .lb-meta{text-align:right;font-size:0.7rem;color:var(--meta);font-variant-numeric:tabular-nums}
+  .pos{color:var(--up)} .neg{color:var(--down)} .muted{color:var(--meta)} .num{font-variant-numeric:tabular-nums}
 
-  /* sections */
-  .divider { border-top: 1px solid var(--line); }
-  section.block { padding-block: clamp(2.2rem, 5vw, 4rem); }
-  .sec-head {
-    display: grid; grid-template-columns: 3.5rem 1fr; gap: 1.5rem; align-items: baseline;
-    margin-bottom: 2rem;
-  }
-  .sec-num { font-family:"Syne",sans-serif; font-weight:700; color: var(--meta); font-size: 0.8rem; letter-spacing:0.1em; }
-  .sec-title { font-family:"Syne",sans-serif; font-weight:700; font-size: clamp(1.2rem,2.4vw,1.9rem); letter-spacing: -0.02em; }
-  .log > summary { list-style:none; cursor:pointer; display:flex; align-items:baseline; gap:1rem; user-select:none; }
-  .log > summary::-webkit-details-marker { display:none; }
-  .log > summary .log-hint { color:var(--meta); font-size:0.72rem; }
-  .log > summary:hover .log-hint { color:var(--text); }
-  .log[open] > summary .log-hint::after { content:" (open)"; }
+  /* diversification stats */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+  .stat{background:var(--bg);padding:1.6rem 1.4rem}
+  .stat .k{font-family:"Syne",sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--meta)}
+  .stat .v{margin-top:0.7rem;font-size:clamp(1.1rem,2vw,1.6rem);font-weight:700;letter-spacing:-0.01em;font-variant-numeric:tabular-nums}
+  .stat .v small{font-size:0.6em;color:var(--meta);font-weight:400}
 
-  /* stats grid */
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); }
-  .stat { background: var(--bg); padding: 1.6rem 1.4rem; }
-  .stat .k { font-family:"Syne",sans-serif; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--meta); }
-  .stat .v { margin-top: 0.7rem; font-size: clamp(1.1rem,2vw,1.6rem); font-weight: 700; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
-  .stat .v small { font-size: 0.62em; color: var(--meta); font-weight: 400; }
-
-  /* legs */
-  .leg-row, .tick-row {
-    display: grid; align-items: baseline; gap: 1.2rem;
-    padding-block: 1.05rem; border-top: 1px solid var(--line);
-    font-size: clamp(0.74rem, 1vw, 0.92rem);
-  }
-  .leg-row { grid-template-columns: 5.5rem 4rem 1fr auto auto; }
-  .tick-row { grid-template-columns: 1fr auto auto auto; }
-  .leg-row:last-child, .tick-row:last-child { border-bottom: 1px solid var(--line); }
-  .tag { font-family:"Syne",sans-serif; font-weight:700; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase;
-    padding: 0.22rem 0.5rem; border:1px solid var(--line); border-radius: 2px; }
-  .tag.short { color: var(--down); border-color: rgba(217,84,79,0.4); }
-  .tag.long  { color: var(--up);   border-color: rgba(111,191,134,0.4); }
-  .muted { color: var(--meta); }
-  .pos { color: var(--up); } .neg { color: var(--down); }
-  .num { font-variant-numeric: tabular-nums; }
-
-  footer { padding-block: 3rem 4rem; color: var(--meta); font-size: 0.72rem; line-height: 1.7; }
-  footer a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line); }
-  .err { padding: 8rem 0; text-align:center; color: var(--meta); font-size: 0.9rem; }
-
-  @media (max-width: 760px) {
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .leg-row { grid-template-columns: 4.5rem 1fr auto; }
-    .leg-row .iv-col, .tick-row .delta-col { display: none; }
-    .sec-head { grid-template-columns: 2.5rem 1fr; gap: 0.8rem; }
-  }
+  .log>summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:1rem;user-select:none}
+  .log>summary::-webkit-details-marker{display:none}
+  .log>summary .log-hint{color:var(--meta);font-size:0.72rem}
+  .log>summary:hover .log-hint{color:var(--text)}
+  .tick-row{display:grid;grid-template-columns:1fr auto auto;gap:1.2rem;padding-block:0.9rem;border-top:1px solid var(--line);font-size:0.8rem}
+  footer{padding-block:3rem 4rem;color:var(--meta);font-size:0.72rem;line-height:1.7}
+  .err{padding:8rem 0;text-align:center;color:var(--meta)}
+  @media(max-width:680px){ .stats{grid-template-columns:1fr} .lb-row{grid-template-columns:1.6rem 3.2rem 1fr 5rem;gap:0.7rem} .lb-meta{display:none} }
 </style>
 </head>
 <body>
   <nav>
-    <div class="brand">CALMAR <span>/ VRP PAPER BOOK</span></div>
+    <div class="brand">CALMAR <span>/ VRP MULTI-ASSET</span></div>
     <div class="status"><span class="dot"></span> LIVE · DERIBIT</div>
   </nav>
-
-  <main id="app" class="canvas"><div class="err">loading live book…</div></main>
-
+  <main id="app" class="canvas"><div class="err">loading…</div></main>
 <script>
-const CAPITAL = 10000;
-const fmtUSD = (n, sign=false) => (sign && n>=0?"+":"") + (n<0?"-":"") + "$" + Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
-const fmtPct = (n) => (n>=0?"+":"") + n.toFixed(2) + "%";
+const PER_BOOK = 10000;
+const fmtUSD=(n,s=false)=>(s&&n>=0?"+":"")+(n<0?"-":"")+"$"+Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
+const fmtPct=(n)=>(n>=0?"+":"")+n.toFixed(2)+"%";
+const TZ="Europe/Chisinau";
+const fmtTime=(iso)=>new Date(iso).toLocaleString("en-GB",{timeZone:TZ,day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).replace(",","");
+const fmtDate=(iso)=>new Date(iso).toLocaleDateString("en-CA",{timeZone:TZ});
 
-function chartSVG(history){
-  if(history.length < 2) return '<svg class="chart"></svg>';
-  const W=1000, H=300, padX=4, padY=24;
-  const eq = history.map(h=>h.equity);
-  const lo = Math.min(...eq, CAPITAL), hi = Math.max(...eq, CAPITAL);
-  const span = (hi-lo)||1;
-  const x = i => padX + i*(W-2*padX)/(history.length-1);
-  const y = v => padY + (1-(v-lo)/span)*(H-2*padY);
-  const pts = history.map((h,i)=>[x(i),y(h.equity)]);
-  const line = pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
-  const area = line + ` L ${x(history.length-1).toFixed(1)} ${H-padY} L ${padX} ${H-padY} Z`;
-  const baseY = y(CAPITAL).toFixed(1);
-  const last = history[history.length-1].equity;
-  const up = last >= CAPITAL;
-  const col = up ? "var(--up)" : "var(--down)";
+function chartSVG(hist){
+  if(hist.length<2) return '<svg class="chart"></svg>';
+  const W=1000,H=300,padX=4,padY=24, base=PER_BOOK*0; // start total
+  const vals=hist.map(h=>h.total);
+  const START=hist[0].total; // first recorded ~ start
+  const lo=Math.min(...vals,START),hi=Math.max(...vals,START),span=(hi-lo)||1;
+  const x=i=>padX+i*(W-2*padX)/(hist.length-1);
+  const y=v=>padY+(1-(v-lo)/span)*(H-2*padY);
+  const pts=hist.map((h,i)=>[x(i),y(h.total)]);
+  const line=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
+  const area=line+` L ${x(hist.length-1).toFixed(1)} ${H-padY} L ${padX} ${H-padY} Z`;
+  const last=hist[hist.length-1].total, up=last>=START, col=up?"var(--up)":"var(--down)";
+  const baseY=y(START).toFixed(1);
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-    <defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0%" stop-color="${col}" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="${col}" stop-opacity="0"/>
-    </linearGradient></defs>
+    <defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="${col}" stop-opacity="0.18"/><stop offset="100%" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
     <line x1="${padX}" x2="${W-padX}" y1="${baseY}" y2="${baseY}" stroke="var(--meta)" stroke-width="1" stroke-dasharray="3 5" opacity="0.6"/>
-    <text class="baseline-label" x="${padX+4}" y="${(+baseY)-7}">$10,000 · start</text>
+    <text class="baseline-label" x="${padX+4}" y="${(+baseY)-7}">$${Math.round(START).toLocaleString()} · start</text>
     <path d="${area}" fill="url(#g)"/>
-    <path d="${line}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <path d="${line}" fill="none" stroke="${col}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
     <circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="4" fill="${col}"/>
   </svg>`;
 }
 
-const TZ = "Europe/Chisinau";
-const fmtTime = (iso) => new Date(iso).toLocaleString("en-GB",{timeZone:TZ,day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).replace(",","");
-const fmtDate = (iso) => new Date(iso).toLocaleDateString("en-CA",{timeZone:TZ});
-
 function render(s){
-  const h = s.history && s.history.length ? s.history[s.history.length-1] : null;
-  const equity = h ? h.equity : CAPITAL;
-  const pnl = equity - CAPITAL;
-  const pct = pnl/CAPITAL*100;
-  const up = pnl >= 0;
-  document.documentElement.style.setProperty("--accent", up ? "var(--up)" : "var(--down)");
+  const h=s.history&&s.history.length?s.history[s.history.length-1]:null;
+  const syms=Object.keys(s.books);
+  const nBooks=syms.length||6;
+  const START=nBooks*PER_BOOK;
+  const total=h?h.total:START;
+  const pnl=total-START, pct=pnl/START*100, up=pnl>=0;
+  document.documentElement.style.setProperty("--accent",up?"var(--up)":"var(--down)");
 
-  const dteH = h ? h.dte : (s.expiry - Date.now())/864e5;
-  const opt = h ? h.optionPnlUSD : 0, hedge = h ? h.hedgePnlUSD : 0, delta = h ? h.netDeltaBTC : 0;
-  const spot = h ? h.spot : s.spotAtOpen;
+  // per-asset rows
+  const rows=syms.map(sym=>{
+    const eq=h&&h.per[sym]!=null?h.per[sym]:PER_BOOK;
+    const p=eq-PER_BOOK; const b=s.books[sym];
+    return {sym,eq,p,pct:p/PER_BOOK*100,premium:b?b.premiumCollectedUSD:0,cycles:b?b.cycles:0,dte:b?(b.expiry-Date.now())/864e5:0};
+  }).sort((a,b)=>b.p-a.p);
 
-  // premium capture + plain-language status
-  const premium = s.premiumCollectedUSD;
-  const capturedPct = pnl/premium*100;
-  const markPct = Math.max(0, Math.min(100, capturedPct));
-  const remaining = Math.max(0, premium - pnl);
-  const back = s.history && s.history.length > 6 ? s.history[s.history.length-7] : (s.history && s.history[0]) || h;
-  const movePct = (back && h) ? (spot/back.spot - 1)*100 : 0;
-  const calm = Math.abs(movePct) < 0.8;
-  const statusText = !h ? "Waiting for the first mark…"
-    : pnl < 0 ? `Costs booked up front — not capturing premium yet. ${calm ? "Calm: time-decay is starting to work." : `BTC moved ${movePct>=0?"+":""}${movePct.toFixed(1)}% — the hedge ate some; recovers if it settles.`}`
-    : calm ? `Market calm — earning time-decay. ~${fmtUSD(remaining)} of premium still to capture.`
-    : `BTC moved ${movePct>=0?"+":""}${movePct.toFixed(1)}% — gave some back to the hedge; recovers if it settles.`;
+  const best=rows[0], worst=rows[rows.length-1];
+  const maxAbs=Math.max(...rows.map(r=>Math.abs(r.p)),1);
 
-  const legRows = s.legs.map(l=>`
-    <div class="leg-row">
-      <span><span class="tag ${l.side}">${l.side}</span></span>
-      <span class="muted iv-col">${l.type.toUpperCase()}</span>
-      <span class="num">$${l.strike.toLocaleString()}</span>
-      <span class="num muted">${l.entryFillBTC.toFixed(4)} BTC</span>
-      <span class="num muted iv-col">IV ${Math.round(l.entryIV)}%</span>
-    </div>`).join("");
-
-  const ticks = (s.history||[]).slice(-14).reverse().map(r=>{
-    const p = r.equity - CAPITAL; const cls = p>=0?"pos":"neg";
-    return `<div class="tick-row">
-      <span class="muted">${fmtTime(r.ts)}</span>
-      <span class="num">$${Math.round(r.spot).toLocaleString()}</span>
-      <span class="num ${cls}">${fmtUSD(p,true)}</span>
-      <span class="num muted delta-col">Δ ${r.netDeltaBTC.toFixed(3)}</span>
+  const lb=rows.map((r,i)=>{
+    const w=Math.abs(r.p)/maxAbs*50; // % of half-width
+    const fill=r.p>=0
+      ? `left:50%;width:${w}%;background:var(--up)`
+      : `right:50%;width:${w}%;background:var(--down)`;
+    return `<div class="lb-row">
+      <span class="lb-rank">${i+1}</span>
+      <span class="lb-sym">${r.sym}</span>
+      <span class="lb-bar"><span class="mid"></span><span class="fill" style="${fill}"></span></span>
+      <span class="lb-pnl ${r.p>=0?'pos':'neg'}">${fmtUSD(r.p,true)} <span class="muted" style="font-weight:400">${fmtPct(r.pct)}</span></span>
+      <span class="lb-meta">prem ${fmtUSD(r.premium)}<br/>${r.cycles} rolls · ${r.dte.toFixed(0)}d</span>
     </div>`;
   }).join("");
 
-  document.getElementById("app").innerHTML = `
+  const ticks=(s.history||[]).slice(-14).reverse().map(r=>{
+    const p=r.total-START; return `<div class="tick-row">
+      <span class="muted">${fmtTime(r.ts)}</span>
+      <span class="num">$${Math.round(r.total).toLocaleString()}</span>
+      <span class="num ${p>=0?'pos':'neg'}">${fmtUSD(p,true)}</span></div>`;
+  }).join("");
+
+  const statusText = !h ? "Waiting for the first mark…"
+    : `Six short-vol books, $${PER_BOOK.toLocaleString()} each, started together — measuring which harvests best and whether the basket is smoother than any one. Best: <b>${best.sym} ${fmtUSD(best.p,true)}</b> · worst: <b>${worst.sym} ${fmtUSD(worst.p,true)}</b>. The portfolio sits between them — that gap IS the diversification.`;
+
+  document.getElementById("app").innerHTML=`
     <section class="hero">
-      <div class="label">01 — Equity · <b>$${CAPITAL.toLocaleString()}</b> virtual · short-vol BTC</div>
-      <div class="equity">${fmtUSD(equity).replace("$","$")}</div>
-      <div class="delta">
-        <span>${fmtUSD(pnl,true)}</span>
-        <span>${fmtPct(pct)}</span>
-        <span class="sub">${s.history.length} ticks · since ${fmtDate(s.openedAt)}</span>
-      </div>
-
-      <div class="premium">
-        <div class="premium-head">
-          <span class="k">Premium capture · this is the goal</span>
-          <span class="pmeta"><b>${capturedPct>=0?capturedPct.toFixed(0):"0"}%</b> of ${fmtUSD(premium,true)} · ${dteH.toFixed(0)}d left</span>
-        </div>
-        <div class="ptrack">
-          <div class="pfill" style="width:${markPct}%"></div>
-          <div class="pmark" style="left:${markPct}%"></div>
-        </div>
-        <div class="premium-foot">
-          <span class="end">$0 · start</span>
-          <span class="status">${statusText}</span>
-          <span class="end">${fmtUSD(premium,true)} · max</span>
-        </div>
-      </div>
-
+      <div class="label">01 — Portfolio · <b>${nBooks} assets × $${PER_BOOK.toLocaleString()}</b> · short-vol · started ${fmtDate(s.startedAt)}</div>
+      <div class="equity">${fmtUSD(total).replace("$","$")}</div>
+      <div class="delta"><span>${fmtUSD(pnl,true)}</span><span>${fmtPct(pct)}</span><span class="sub">${s.history.length} ticks · vs $${START.toLocaleString()} start</span></div>
+      <div class="pstatus">${statusText}</div>
       <div class="chart-wrap">${chartSVG(s.history||[])}</div>
     </section>
 
     <section class="block divider">
-      <div class="stats">
-        <div class="stat"><div class="k">Premium collected</div><div class="v pos">${fmtUSD(s.premiumCollectedUSD,true)}</div></div>
-        <div class="stat"><div class="k">Days to expiry</div><div class="v">${dteH.toFixed(1)}<small> d · ${s.expiryDate}</small></div></div>
-        <div class="stat"><div class="k">Net delta</div><div class="v">${delta.toFixed(3)}<small> BTC</small></div></div>
-        <div class="stat"><div class="k">BTC spot</div><div class="v">$${Math.round(spot).toLocaleString()}</div></div>
-      </div>
+      <div class="sec-head"><div class="sec-num">02</div><div class="sec-title">Leaderboard · which asset harvests best</div></div>
+      ${lb}
     </section>
 
     <section class="block divider">
-      <div class="sec-head"><div class="sec-num">02</div><div class="sec-title">Position</div></div>
-      <div>${legRows}</div>
-      <div style="margin-top:1.6rem; display:flex; gap:2.5rem; flex-wrap:wrap; font-size:0.82rem;">
-        <span class="muted">Option P&amp;L <span class="${opt>=0?'pos':'neg'} num">${fmtUSD(opt,true)}</span></span>
-        <span class="muted">Hedge P&amp;L <span class="${hedge>=0?'pos':'neg'} num">${fmtUSD(hedge,true)}</span></span>
+      <div class="sec-head"><div class="sec-num">03</div><div class="sec-title">Diversification</div></div>
+      <div class="stats">
+        <div class="stat"><div class="k">Best book</div><div class="v ${best.p>=0?'pos':'neg'}">${best.sym} ${fmtUSD(best.p,true)}</div></div>
+        <div class="stat"><div class="k">Worst book</div><div class="v ${worst.p>=0?'pos':'neg'}">${worst.sym} ${fmtUSD(worst.p,true)}</div></div>
+        <div class="stat"><div class="k">Portfolio (avg)</div><div class="v ${pnl>=0?'pos':'neg'}">${fmtUSD(pnl/nBooks,true)}<small> /book</small></div></div>
       </div>
+      <p class="muted" style="margin-top:1.4rem;font-size:0.82rem;line-height:1.6;max-width:64ch">The portfolio return ≈ average of the books, but its <i>swings</i> should be smaller than the wildest single asset — different coins spike on different days. More independent bets = smoother ride. (Partial: in a broad crash they fall together.)</p>
     </section>
 
     <section class="block divider">
       <details class="log">
-        <summary><span class="sec-num">03</span> <span class="sec-title">Tick log</span> <span class="log-hint">— show raw ticks (is it working?)</span></summary>
-        <div class="tick-row" style="border-top:none; color:var(--meta); font-family:Syne,sans-serif; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; margin-top:1.6rem;">
-          <span>Time · Chișinău</span><span>Spot</span><span>P&amp;L</span><span class="delta-col">Net Δ</span>
-        </div>
-        ${ticks || '<div class="muted" style="padding:1rem 0;">no ticks yet</div>'}
+        <summary><span class="sec-num">04</span> <span class="sec-title">Tick log</span> <span class="log-hint">— portfolio total over time (is it working?)</span></summary>
+        <div class="tick-row" style="border-top:none;color:var(--meta);font-family:Syne,sans-serif;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;margin-top:1.6rem"><span>Time · Chișinău</span><span>Total</span><span>P&amp;L</span></div>
+        ${ticks||'<div class="muted" style="padding:1rem 0">no ticks yet</div>'}
       </details>
     </section>
 
     <footer class="divider">
-      Virtual short-volatility book on live Deribit quotes · sells ATM straddle, buys OTM put hedge, delta-hedged.<br/>
-      Ticks hourly via GitHub Actions. Auto-refreshes every 60s · pull the repo for the latest cloud ticks.<br/>
-      <span class="muted">No real money. P&amp;L is a coin-margined USD approximation.</span>
+      Six virtual short-volatility books (BTC, ETH, SOL, XRP, AVAX, TRX) on live Deribit quotes · sell ATM straddle + OTM put hedge, delta-hedged, auto-rolled every ~30d.<br/>
+      Net of fees. Ticks via GitHub Actions, auto-refreshes every 60s. <span class="muted">No real money · paper test running ~6 months.</span>
     </footer>`;
 }
-
 async function loadData(){
-  try{
-    const res = await fetch("./data/vrp-paper.json?_=" + Date.now());
-    if(!res.ok) throw new Error(res.status);
-    render(await res.json());
-  }catch(e){
-    document.getElementById("app").innerHTML =
-      '<div class="err">could not load data/vrp-paper.json<br/><br/>serve the folder over http (npm run dash), not file://</div>';
-  }
+  try{ const r=await fetch("./data/vrp-multi.json?_="+Date.now()); if(!r.ok) throw 0; render(await r.json()); }
+  catch(e){ document.getElementById("app").innerHTML='<div class="err">could not load data/vrp-multi.json</div>'; }
 }
-loadData();
-setInterval(loadData, 60000);
+loadData(); setInterval(loadData,60000);
 </script>
 </body>
 </html>

@@ -8,6 +8,8 @@
     "open": "tsx vrp-paper.ts open",
     "tick": "tsx vrp-paper.ts tick",
     "status": "tsx vrp-paper.ts status",
+    "multi:tick": "tsx vrp-multi-cli.ts tick",
+    "multi:status": "tsx vrp-multi-cli.ts status",
     "dash": "tsx serve.ts",
     "server": "tsx server.ts"
   },

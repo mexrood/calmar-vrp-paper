@@ -30,17 +30,17 @@ jobs:
       - name: Install deps
         run: npm install --no-audit --no-fund
 
-      - name: Tick the book
-        run: npm run tick
+      - name: Tick the books
+        run: npm run multi:tick
 
       - name: Commit updated state
         run: |
           git config user.name "vrp-bot"
           git config user.email "vrp-bot@users.noreply.github.com"
-          git add data/vrp-paper.json
+          git add data/vrp-multi.json
           if git diff --staged --quiet; then
             echo "no state change"
           else
-            git commit -m "tick: mark VRP book $(date -u +%Y-%m-%dT%H:%MZ)"
+            git commit -m "tick: mark VRP books $(date -u +%Y-%m-%dT%H:%MZ)"
             git push
           fi

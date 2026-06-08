@@ -17,6 +17,12 @@
     padding:1.1rem clamp(1.25rem,6vw,5rem);font-family:"Syne",sans-serif;font-weight:700;font-size:clamp(0.62rem,0.85vw,0.78rem);
     letter-spacing:0.14em;text-transform:uppercase;mix-blend-mode:difference}
   nav .brand span{color:var(--meta)}
+  .tabs{display:flex;gap:0.4rem;align-items:center}
+  .tabs button{font-family:"Syne",sans-serif;font-weight:700;font-size:clamp(0.58rem,0.8vw,0.74rem);letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--meta);background:none;border:1px solid transparent;padding:0.4rem 0.7rem;border-radius:2px;cursor:pointer;transition:color .2s,border-color .2s}
+  .tabs button:hover{color:var(--text)}
+  .tabs button.active{color:var(--text);border-color:var(--line)}
+  .tabs button.soon{opacity:0.55}
   .status{display:flex;align-items:center;gap:0.55rem}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--up);animation:pulse 2.4s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(111,191,134,0.45)}70%{box-shadow:0 0 0 8px rgba(111,191,134,0)}100%{box-shadow:0 0 0 0 rgba(111,191,134,0)}}
@@ -72,8 +78,13 @@
 </head>
 <body>
   <nav>
-    <div class="brand">CALMAR <span>/ VRP MULTI-ASSET</span></div>
-    <div class="status"><span class="dot"></span> LIVE · DERIBIT</div>
+    <div class="brand">CALMAR <span>/ LAB</span></div>
+    <div class="tabs">
+      <button data-tab="vrp" class="active">VRP · Multi-Asset</button>
+      <button data-tab="carry" class="soon">Carry-Stack</button>
+      <button data-tab="pendle" class="soon">Pendle</button>
+    </div>
+    <div class="status"><span class="dot"></span> LIVE</div>
   </nav>
   <main id="app" class="canvas"><div class="err">loading…</div></main>
 <script>
@@ -107,7 +118,7 @@ function chartSVG(hist){
   </svg>`;
 }
 
-function render(s){
+function renderVRP(s){
   const h=s.history&&s.history.length?s.history[s.history.length-1]:null;
   const syms=Object.keys(s.books);
   const nBooks=syms.length||6;
@@ -188,11 +199,34 @@ function render(s){
       <span class="muted">Approximations: BTC/ETH use a coin-margined USD model (alts are exact USDC-linear); hedged at tick frequency (~2h), not continuously; no margin/liquidation. No real money · ~6-month run.</span>
     </footer>`;
 }
-async function loadData(){
-  try{ const r=await fetch("./data/vrp-multi.json?_="+Date.now()); if(!r.ok) throw 0; render(await r.json()); }
+// ── tabs: VRP is live; new strategies get their own slot ──
+const SOON = {
+  carry: { title:"Carry-Stack", desc:"Delta-neutral carry-stacking (Ethena-style, self-run): long a yield-bearing asset (e.g. staked ETH) + short the perp, collecting funding AND staking yield on one neutral position — entered only when funding is rich. Stress-tested on the correlated tail (does funding flip while collateral depegs?). Paper book in research." },
+  pendle:{ title:"Pendle · Fixed Income", desc:"On-chain fixed-vs-floating: lock a fixed yield via Principal Tokens when it prices above expected floating, or arbitrage Pendle implied APY against CEX/DeFi lending and T-bills. A new family (term structure of rates), not vol or funding. Snapshot in research." },
+};
+let activeTab = "vrp";
+async function loadVRP(){
+  try{ const r=await fetch("./data/vrp-multi.json?_="+Date.now()); if(!r.ok) throw 0; renderVRP(await r.json()); }
   catch(e){ document.getElementById("app").innerHTML='<div class="err">could not load data/vrp-multi.json</div>'; }
 }
-loadData(); setInterval(loadData,60000);
+function renderSoon(tab){
+  const s=SOON[tab];
+  document.getElementById("app").innerHTML=`
+    <section class="hero">
+      <div class="label">— ${s.title} · paper book</div>
+      <div class="equity" style="font-size:clamp(2rem,7vw,5rem);color:var(--meta)">In research</div>
+      <p class="pstatus" style="margin-top:1.5rem">${s.desc}</p>
+      <p class="muted" style="margin-top:1.4rem;font-size:0.82rem;line-height:1.6;max-width:62ch">It will live here as its own live paper book, $10k, net of all costs — comparable side-by-side with VRP. Building one strategy at a time, validated before it goes live. The VRP tab keeps running untouched.</p>
+    </section>`;
+}
+function selectTab(tab){
+  activeTab=tab;
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  if(tab==="vrp") loadVRP(); else renderSoon(tab);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>selectTab(b.dataset.tab)));
+selectTab("vrp");
+setInterval(()=>{ if(activeTab==="vrp") loadVRP(); },60000);
 </script>
 </body>
 </html>

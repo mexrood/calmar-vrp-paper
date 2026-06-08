@@ -20,6 +20,8 @@ const CAPITAL = 10_000;          // per asset
 const NOTIONAL_FRAC = 0.6;       // straddle notional ≈ 0.6 × capital
 const TARGET_DTE = 30, HEDGE_OTM = 0.75, ROLL_DTE = 1.0;
 const PERP_COST = 0.0006, OPT_FEE_RATE = 0.0003, OPT_FEE_CAP = 0.125;
+const FUNDING_ANN = 0.10;        // conservative perp-leg funding drag (annualized)
+const SPREAD_FB = 0.04;          // assumed half-spread when a thin alt has no live bid/ask
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 export const ASSETS = [
@@ -40,7 +42,7 @@ interface Leg { name: string; type: "call" | "put"; strike: number; side: "short
 interface Book {
   sym: string; qty: number; openedAt: string; expiry: number; expiryDate: string; spotAtOpen: number;
   legs: Leg[]; perpQty: number; perpEntry: number; realizedHedgePnlUSD: number; premiumCollectedUSD: number;
-  feesUSD: number; realizedPnlUSD: number; cycles: number; lastSpot: number;
+  feesUSD: number; realizedPnlUSD: number; cycles: number; lastSpot: number; lastTickMs: number;
 }
 export interface MultiState { startedAt: string; books: Record<string, Book>; history: Array<{ ts: string; total: number; per: Record<string, number> }>; }
 
@@ -72,8 +74,10 @@ async function openBook(a: Asset): Promise<Book | null> {
   const [tc, tp, th] = await Promise.all([tickerOf(insC.instrument_name), tickerOf(insP.instrument_name), tickerOf(insH.instrument_name)]);
   if (!tc || !tp || !th) return null;
   const qty = +(NOTIONAL_FRAC * CAPITAL / spot).toPrecision(3);
-  // sell at bid, buy hedge at ask (USD per contract)
-  const cBid = usdPrice(a, tc.best_bid_price || tc.mark_price, spot), pBid = usdPrice(a, tp.best_bid_price || tp.mark_price, spot), hAsk = usdPrice(a, th.best_ask_price || th.mark_price, spot);
+  // sell at bid, buy hedge at ask; if no live quote (thin alt) assume a SPREAD_FB haircut
+  const bidOf = (t: any) => t.best_bid_price || t.mark_price * (1 - SPREAD_FB);
+  const askOf = (t: any) => t.best_ask_price || t.mark_price * (1 + SPREAD_FB);
+  const cBid = usdPrice(a, bidOf(tc), spot), pBid = usdPrice(a, bidOf(tp), spot), hAsk = usdPrice(a, askOf(th), spot);
   const legs: Leg[] = [
     { name: insC.instrument_name, type: "call", strike: atmK, side: "short", entryUsd: cBid, entryIV: tc.mark_iv },
     { name: insP.instrument_name, type: "put",  strike: atmK, side: "short", entryUsd: pBid, entryIV: tp.mark_iv },
@@ -83,7 +87,7 @@ async function openBook(a: Asset): Promise<Book | null> {
   const netDelta = (-(tc.greeks?.delta ?? 0.5) - (tp.greeks?.delta ?? -0.5) + (th.greeks?.delta ?? -0.05)) * qty;
   const fees = legs.reduce((acc, l) => acc + optFeeUsd(a, l.entryUsd, spot, qty), 0) + Math.abs(netDelta) * spot * PERP_COST;
   return { sym: a.sym, qty, openedAt: new Date().toISOString(), expiry, expiryDate: new Date(expiry).toISOString().slice(0, 10), spotAtOpen: spot,
-    legs, perpQty: -netDelta, perpEntry: spot, realizedHedgePnlUSD: 0, premiumCollectedUSD: premiumUSD, feesUSD: fees, realizedPnlUSD: 0, cycles: 0, lastSpot: spot };
+    legs, perpQty: -netDelta, perpEntry: spot, realizedHedgePnlUSD: 0, premiumCollectedUSD: premiumUSD, feesUSD: fees, realizedPnlUSD: 0, cycles: 0, lastSpot: spot, lastTickMs: Date.now() };
 }
 
 // mark a book; roll if expired. returns equity (USD) for the book.
@@ -106,6 +110,12 @@ async function markBook(a: Asset, b: Book): Promise<number> {
     netDelta += (leg.side === "short" ? -1 : 1) * delta * b.qty;
   }
 
+  // funding drag on the perp notional held since the last tick (conservative, always a cost)
+  const nowMs = Date.now();
+  const daysElapsed = b.lastTickMs ? Math.max(0, Math.min(2, (nowMs - b.lastTickMs) / 864e5)) : 0;
+  b.feesUSD += Math.abs(b.perpQty) * spot * (FUNDING_ANN / 365) * daysElapsed;
+  b.lastTickMs = nowMs;
+
   b.realizedHedgePnlUSD += b.perpQty * (spot - b.perpEntry);
   const newPerp = -netDelta;
   b.feesUSD += Math.abs(newPerp - b.perpQty) * spot * PERP_COST;
@@ -113,8 +123,8 @@ async function markBook(a: Asset, b: Book): Promise<number> {
 
   const openEquity = CAPITAL + b.realizedPnlUSD + optPnl + b.realizedHedgePnlUSD - b.feesUSD;
 
-  if (dte <= ROLL_DTE) { // crystallize this cycle and roll into a fresh one
-    b.realizedPnlUSD += optPnl + b.realizedHedgePnlUSD;
+  if (dte <= ROLL_DTE) { // crystallize this cycle (NET of fees) and roll into a fresh one
+    b.realizedPnlUSD += optPnl + b.realizedHedgePnlUSD - b.feesUSD;
     b.cycles += 1;
     const fresh = await openBook(a);
     if (fresh) { fresh.realizedPnlUSD = b.realizedPnlUSD; fresh.cycles = b.cycles; b.books_replace = fresh as any; }

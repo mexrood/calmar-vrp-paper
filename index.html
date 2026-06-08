@@ -184,7 +184,8 @@ function render(s){
 
     <footer class="divider">
       Six virtual short-volatility books (BTC, ETH, SOL, XRP, AVAX, TRX) on live Deribit quotes · sell ATM straddle + OTM put hedge, delta-hedged, auto-rolled every ~30d.<br/>
-      Net of fees. Ticks via GitHub Actions, auto-refreshes every 60s. <span class="muted">No real money · paper test running ~6 months.</span>
+      Net of: option exchange fee (0.03%/contract, capped), bid/ask spread on entry, per-rehedge perp cost, and a conservative 10%/yr funding drag.<br/>
+      <span class="muted">Approximations: BTC/ETH use a coin-margined USD model (alts are exact USDC-linear); hedged at tick frequency (~2h), not continuously; no margin/liquidation. No real money · ~6-month run.</span>
     </footer>`;
 }
 async function loadData(){

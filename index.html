@@ -209,10 +209,31 @@ async function loadVRP(){
   catch(e){ document.getElementById("app").innerHTML='<div class="err">could not load data/vrp-multi.json</div>'; }
 }
 async function loadPortfolio(){
-  try{ const r=await fetch("./data/portfolio.json?_="+Date.now()); if(!r.ok) throw 0; renderPortfolio(await r.json()); }
-  catch(e){ document.getElementById("app").innerHTML='<div class="err">could not load data/portfolio.json</div>'; }
+  try{
+    const [p,strat,vrp]=await Promise.all([
+      fetch("./data/portfolio.json?_="+Date.now()).then(r=>r.ok?r.json():null),
+      fetch("./data/strategies.json?_="+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch("./data/vrp-multi.json?_="+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null),
+    ]);
+    if(!p) throw 0; renderPortfolio(p,strat,vrp);
+  }catch(e){ document.getElementById("app").innerHTML='<div class="err">could not load data/portfolio.json</div>'; }
 }
-function renderPortfolio(p){
+function liveStreamsHTML(strat,vrp){
+  const cells=[];
+  if(vrp&&vrp.history&&vrp.history.length){const t=vrp.history.at(-1).total,p=(t-60000)/60000*100;
+    cells.push(`<div class="stat"><div class="k">VRP · 6 books live</div><div class="v ${p>=0?'pos':'neg'}">${p>=0?'+':''}${p.toFixed(2)}%<small> · vol-spike tail</small></div></div>`);}
+  if(strat){const c=strat.carry.equity,cp=(c-10000)/10000*100,fa=strat.history.at(-1).fundingAnn;
+    cells.push(`<div class="stat"><div class="k">Carry · live</div><div class="v ${cp>=0?'pos':'neg'}">${cp>=0?'+':''}${cp.toFixed(2)}%<small> · funding ${fa}%/yr now</small></div></div>`);
+    const l=strat.lending.equity,lp=(l-10000)/10000*100,ap=strat.history.at(-1).lendApy;
+    cells.push(`<div class="stat"><div class="k">Lending · anchor</div><div class="v ${lp>=0?'pos':'neg'}">${lp>=0?'+':''}${lp.toFixed(2)}%<small> · apy ${ap}%/yr</small></div></div>`);}
+  if(!cells.length) return "";
+  return `<section class="block divider">
+    <div class="sec-head"><div class="sec-num">02</div><div class="sec-title">Live streams · forward-measured</div></div>
+    <div class="stats" style="grid-template-columns:repeat(${cells.length},1fr)">${cells.join("")}</div>
+    <p class="muted" style="margin-top:1.4rem;font-size:0.82rem;max-width:64ch">Each is a live $10k paper book (VRP = 6×$10k). Watch whether the "smart" streams actually beat the lending anchor net of risk — and whether carry's funding stays positive. Right now funding is <b>negative</b>, so carry pays while lending earns: the regime risk, live.</p>
+  </section>`;
+}
+function renderPortfolio(p,strat,vrp){
   document.documentElement.style.setProperty("--accent","var(--up)");
   const s=p.streams;
   const levRows=p.levSweep.map(r=>{
@@ -235,14 +256,15 @@ function renderPortfolio(p){
       <div class="delta"><span>honest target / yr</span><span class="sub">at ~${p.honestLev}× leverage · correlation ${p.correlation} · the honest &gt;10%</span></div>
       <p class="pstatus">Two uncorrelated streams (corr <b>${p.correlation}</b> — VRP bleeds on vol-spikes, carry on depeg/funding). The basket is smoother than either alone, so moderate leverage earns its keep. <b>~${p.honestCagr}% at ${p.honestLev}×</b> is the honest ceiling — not the naive <b>${p.naiveCagr}%</b> the calm backtest suggests.</p>
     </section>
+    ${liveStreamsHTML(strat,vrp)}
     <section class="block divider">
-      <div class="sec-head"><div class="sec-num">02</div><div class="sec-title">Leverage curve · greed ↔ tail</div></div>
+      <div class="sec-head"><div class="sec-num">03</div><div class="sec-title">Leverage curve · greed ↔ tail</div></div>
       <p class="muted" style="margin-bottom:1.5rem;font-size:0.82rem;max-width:64ch">Drawdown shown is <b>real-tail-adjusted</b> (assumes a true joint crash ~−${p.realTailPct}%, not the calm sample's −4%). Pick where the tail is survivable. ◄ = the honest zone.</p>
       ${levRows}
       <p class="neg" style="margin-top:1.5rem;font-size:0.82rem;max-width:64ch">⚠️ The backtest's "safe ${p.naiveSafeLev}× → ${p.naiveCagr}%" is a MIRAGE: the sample has no COVID/intraday-gap, and correlations spike to 1 in a real crash. That leverage gets wiped. Trust the real-tail column.</p>
     </section>
     <section class="block divider">
-      <div class="sec-head"><div class="sec-num">03</div><div class="sec-title">Streams (1×, unlevered)</div></div>
+      <div class="sec-head"><div class="sec-num">04</div><div class="sec-title">Backtest streams (1×, unlevered)</div></div>
       <div class="stats">
         <div class="stat"><div class="k">VRP solo</div><div class="v">+${s.vrp.cagr}%<small> · Sharpe ${s.vrp.sharpe} · DD ${s.vrp.mdd}%</small></div></div>
         <div class="stat"><div class="k">Carry solo</div><div class="v">+${s.carry.cagr}%<small> · Sharpe ${s.carry.sharpe} · DD ${s.carry.mdd}%</small></div></div>
@@ -250,7 +272,7 @@ function renderPortfolio(p){
       </div>
     </section>
     <section class="block divider">
-      <div class="sec-head"><div class="sec-num">04</div><div class="sec-title">Crash evidence · do they bleed together?</div></div>
+      <div class="sec-head"><div class="sec-num">05</div><div class="sec-title">Crash evidence · do they bleed together?</div></div>
       ${crash}
       <p class="muted" style="margin-top:1.4rem;font-size:0.82rem;max-width:64ch">Look at 2022-05-31: carry −6.3% (stETH depeg) while VRP barely moved. Different crises hit different streams — that separation is what makes the basket leverable.</p>
     </section>

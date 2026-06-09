@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2026-06-09T00:17:52.405Z",
+  "window": "2022-01-01 → 2026-05-10",
+  "nPeriods": 54,
+  "correlation": 0.07,
+  "streams": {
+    "vrp": {
+      "cagr": 6,
+      "sharpe": 0.9,
+      "mdd": -6
+    },
+    "carry": {
+      "cagr": 6,
+      "sharpe": 1.62,
+      "mdd": -7
+    },
+    "basket": {
+      "cagr": 6,
+      "sharpe": 1.55,
+      "mdd": -4
+    }
+  },
+  "naiveSafeLev": 7,
+  "naiveCagr": 47,
+  "honestLev": 2.3,
+  "honestCagr": 15,
+  "realTailPct": 15,
+  "levSweep": [
+    {
+      "L": 1,
+      "cagr": 6.3,
+      "mddReal": -15
+    },
+    {
+      "L": 1.5,
+      "cagr": 9.5,
+      "mddReal": -22
+    },
+    {
+      "L": 2,
+      "cagr": 12.8,
+      "mddReal": -30
+    },
+    {
+      "L": 2.5,
+      "cagr": 16,
+      "mddReal": -38
+    },
+    {
+      "L": 3,
+      "cagr": 19.4,
+      "mddReal": -45
+    },
+    {
+      "L": 3.5,
+      "cagr": 22.8,
+      "mddReal": -53
+    },
+    {
+      "L": 4,
+      "cagr": 26.2,
+      "mddReal": -60
+    },
+    {
+      "L": 4.5,
+      "cagr": 29.6,
+      "mddReal": -68
+    },
+    {
+      "L": 5,
+      "cagr": 33.1,
+      "mddReal": -75
+    },
+    {
+      "L": 5.5,
+      "cagr": 36.6,
+      "mddReal": -83
+    },
+    {
+      "L": 6,
+      "cagr": 40.1,
+      "mddReal": -90
+    }
+  ],
+  "crashRows": [
+    {
+      "l": "2022-05-01",
+      "vrp": -1.6,
+      "carry": 0.4
+    },
+    {
+      "l": "2022-05-31",
+      "vrp": -0.8,
+      "carry": -6.3
+    },
+    {
+      "l": "2022-06-30",
+      "vrp": 0.8,
+      "carry": 0.5
+    },
+    {
+      "l": "2022-11-27",
+      "vrp": 1.5,
+      "carry": 0.5
+    }
+  ]
+}

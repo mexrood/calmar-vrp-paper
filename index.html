@@ -81,7 +81,7 @@
     <div class="brand">CALMAR <span>/ LAB</span></div>
     <div class="tabs">
       <button data-tab="vrp" class="active">VRP · Multi-Asset</button>
-      <button data-tab="carry" class="soon">Carry-Stack</button>
+      <button data-tab="portfolio">Portfolio</button>
       <button data-tab="pendle" class="soon">Pendle</button>
     </div>
     <div class="status"><span class="dot"></span> LIVE</div>
@@ -199,30 +199,79 @@ function renderVRP(s){
       <span class="muted">Approximations: BTC/ETH use a coin-margined USD model (alts are exact USDC-linear); hedged at tick frequency (~2h), not continuously; no margin/liquidation. No real money · ~6-month run.</span>
     </footer>`;
 }
-// ── tabs: VRP is live; new strategies get their own slot ──
+// ── tabs ──
 const SOON = {
-  carry: { title:"Carry-Stack", desc:"Delta-neutral carry-stacking (Ethena-style, self-run): long a yield-bearing asset (e.g. staked ETH) + short the perp, collecting funding AND staking yield on one neutral position — entered only when funding is rich. Stress-tested on the correlated tail (does funding flip while collateral depegs?). Paper book in research." },
-  pendle:{ title:"Pendle · Fixed Income", desc:"On-chain fixed-vs-floating: lock a fixed yield via Principal Tokens when it prices above expected floating, or arbitrage Pendle implied APY against CEX/DeFi lending and T-bills. A new family (term structure of rates), not vol or funding. Snapshot in research." },
+  pendle:{ title:"Pendle · Fixed Income", desc:"On-chain fixed-vs-floating: lock a fixed yield via Principal Tokens when it prices above expected floating, or arbitrage Pendle implied APY against CEX/DeFi lending and T-bills. A new family (term structure of rates), not vol or funding. In research." },
 };
 let activeTab = "vrp";
 async function loadVRP(){
   try{ const r=await fetch("./data/vrp-multi.json?_="+Date.now()); if(!r.ok) throw 0; renderVRP(await r.json()); }
   catch(e){ document.getElementById("app").innerHTML='<div class="err">could not load data/vrp-multi.json</div>'; }
 }
+async function loadPortfolio(){
+  try{ const r=await fetch("./data/portfolio.json?_="+Date.now()); if(!r.ok) throw 0; renderPortfolio(await r.json()); }
+  catch(e){ document.getElementById("app").innerHTML='<div class="err">could not load data/portfolio.json</div>'; }
+}
+function renderPortfolio(p){
+  document.documentElement.style.setProperty("--accent","var(--up)");
+  const s=p.streams;
+  const levRows=p.levSweep.map(r=>{
+    const honest=Math.abs(r.L-p.honestLev)<0.26;
+    const danger=r.mddReal<=-50;
+    return `<div class="lb-row" style="grid-template-columns:4.5rem 1fr 9rem">
+      <span class="num ${honest?'pos':''}" style="font-weight:700">${r.L}x${honest?' ◄':''}</span>
+      <span class="lb-bar"><span class="fill" style="left:0;width:${Math.min(100,r.cagr/40*100)}%;background:${danger?'var(--down)':honest?'var(--up)':'var(--meta)'}"></span></span>
+      <span class="num"><span class="${danger?'neg':honest?'pos':''}">${r.cagr}%</span> <span class="muted">DD ${r.mddReal}%</span></span>
+    </div>`;
+  }).join("");
+  const crash=p.crashRows.map(r=>`<div class="lb-row" style="grid-template-columns:6rem 1fr 1fr">
+    <span class="muted">${r.l}</span>
+    <span class="num ${r.vrp<0?'neg':'pos'}">VRP ${r.vrp>0?'+':''}${r.vrp}%</span>
+    <span class="num ${r.carry<0?'neg':'pos'}">carry ${r.carry>0?'+':''}${r.carry}%</span></div>`).join("");
+  document.getElementById("app").innerHTML=`
+    <section class="hero">
+      <div class="label">— Portfolio · VRP + Carry · diversified basket · ${p.window}</div>
+      <div class="equity">+${p.honestCagr}%</div>
+      <div class="delta"><span>honest target / yr</span><span class="sub">at ~${p.honestLev}× leverage · correlation ${p.correlation} · the honest &gt;10%</span></div>
+      <p class="pstatus">Two uncorrelated streams (corr <b>${p.correlation}</b> — VRP bleeds on vol-spikes, carry on depeg/funding). The basket is smoother than either alone, so moderate leverage earns its keep. <b>~${p.honestCagr}% at ${p.honestLev}×</b> is the honest ceiling — not the naive <b>${p.naiveCagr}%</b> the calm backtest suggests.</p>
+    </section>
+    <section class="block divider">
+      <div class="sec-head"><div class="sec-num">02</div><div class="sec-title">Leverage curve · greed ↔ tail</div></div>
+      <p class="muted" style="margin-bottom:1.5rem;font-size:0.82rem;max-width:64ch">Drawdown shown is <b>real-tail-adjusted</b> (assumes a true joint crash ~−${p.realTailPct}%, not the calm sample's −4%). Pick where the tail is survivable. ◄ = the honest zone.</p>
+      ${levRows}
+      <p class="neg" style="margin-top:1.5rem;font-size:0.82rem;max-width:64ch">⚠️ The backtest's "safe ${p.naiveSafeLev}× → ${p.naiveCagr}%" is a MIRAGE: the sample has no COVID/intraday-gap, and correlations spike to 1 in a real crash. That leverage gets wiped. Trust the real-tail column.</p>
+    </section>
+    <section class="block divider">
+      <div class="sec-head"><div class="sec-num">03</div><div class="sec-title">Streams (1×, unlevered)</div></div>
+      <div class="stats">
+        <div class="stat"><div class="k">VRP solo</div><div class="v">+${s.vrp.cagr}%<small> · Sharpe ${s.vrp.sharpe} · DD ${s.vrp.mdd}%</small></div></div>
+        <div class="stat"><div class="k">Carry solo</div><div class="v">+${s.carry.cagr}%<small> · Sharpe ${s.carry.sharpe} · DD ${s.carry.mdd}%</small></div></div>
+        <div class="stat"><div class="k">Basket 50/50</div><div class="v pos">+${s.basket.cagr}%<small> · Sharpe ${s.basket.sharpe} · DD ${s.basket.mdd}%</small></div></div>
+      </div>
+    </section>
+    <section class="block divider">
+      <div class="sec-head"><div class="sec-num">04</div><div class="sec-title">Crash evidence · do they bleed together?</div></div>
+      ${crash}
+      <p class="muted" style="margin-top:1.4rem;font-size:0.82rem;max-width:64ch">Look at 2022-05-31: carry −6.3% (stETH depeg) while VRP barely moved. Different crises hit different streams — that separation is what makes the basket leverable.</p>
+    </section>
+    <footer class="divider">
+      Backtest 2022→2026, ${p.nPeriods} periods, net of costs · stETH depeg injected into Jun-2022.<br/>
+      <span class="muted">2 streams only — a real basket wants 3-4 different failure modes. COVID not in sample (no DVOL pre-2021). Leverage sizing assumes correlation→1 in the tail. No real money.</span>
+    </footer>`;
+}
 function renderSoon(tab){
   const s=SOON[tab];
   document.getElementById("app").innerHTML=`
     <section class="hero">
-      <div class="label">— ${s.title} · paper book</div>
+      <div class="label">— ${s.title}</div>
       <div class="equity" style="font-size:clamp(2rem,7vw,5rem);color:var(--meta)">In research</div>
       <p class="pstatus" style="margin-top:1.5rem">${s.desc}</p>
-      <p class="muted" style="margin-top:1.4rem;font-size:0.82rem;line-height:1.6;max-width:62ch">It will live here as its own live paper book, $10k, net of all costs — comparable side-by-side with VRP. Building one strategy at a time, validated before it goes live. The VRP tab keeps running untouched.</p>
     </section>`;
 }
 function selectTab(tab){
   activeTab=tab;
   document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
-  if(tab==="vrp") loadVRP(); else renderSoon(tab);
+  if(tab==="vrp") loadVRP(); else if(tab==="portfolio") loadPortfolio(); else renderSoon(tab);
 }
 document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>selectTab(b.dataset.tab)));
 selectTab("vrp");

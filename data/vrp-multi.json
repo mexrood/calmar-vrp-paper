@@ -34,15 +34,15 @@
           "entryIV": 65.04
         }
       ],
-      "perpQty": 0.017507069999999993,
-      "perpEntry": 63764.46,
-      "realizedHedgePnlUSD": -44.241566474700015,
+      "perpQty": 0.017731034999999996,
+      "perpEntry": 63777.36,
+      "realizedHedgePnlUSD": -44.01572527169999,
       "premiumCollectedUSD": 434.3798612160001,
-      "feesUSD": 19.98929376164845,
+      "feesUSD": 20.01441193876235,
       "realizedPnlUSD": 0,
       "cycles": 0,
-      "lastSpot": 63764.46,
-      "lastTickMs": 1781463480506
+      "lastSpot": 63777.36,
+      "lastTickMs": 1781468154282
     },
     "ETH": {
       "sym": "ETH",
@@ -77,15 +77,15 @@
           "entryIV": 85.08
         }
       ],
-      "perpQty": -0.45453239999999995,
-      "perpEntry": 1660.8,
-      "realizedHedgePnlUSD": -54.21110866500004,
+      "perpQty": -0.42643649999999966,
+      "perpEntry": 1662.43,
+      "realizedHedgePnlUSD": -54.95199647700009,
       "premiumCollectedUSD": 579.63999765,
-      "feesUSD": 18.23805087787004,
+      "feesUSD": 18.277273723459864,
       "realizedPnlUSD": 0,
       "cycles": 0,
-      "lastSpot": 1660.8,
-      "lastTickMs": 1781463481049
+      "lastSpot": 1662.43,
+      "lastTickMs": 1781468154665
     },
     "SOL": {
       "sym": "SOL",
@@ -120,15 +120,15 @@
           "entryIV": 82.86
         }
       ],
-      "perpQty": 20.570019,
-      "perpEntry": 67.3601,
-      "realizedHedgePnlUSD": -102.69479913289994,
+      "perpQty": 21.542736999999995,
+      "perpEntry": 67.4721,
+      "realizedHedgePnlUSD": -100.39095700490006,
       "premiumCollectedUSD": 683.2400000000001,
-      "feesUSD": 22.62478146197121,
+      "feesUSD": 22.684728842418746,
       "realizedPnlUSD": 0,
       "cycles": 0,
-      "lastSpot": 67.3601,
-      "lastTickMs": 1781463481442
+      "lastSpot": 67.4721,
+      "lastTickMs": 1781468155048
     },
     "XRP": {
       "sym": "XRP",
@@ -163,15 +163,15 @@
           "entryIV": 81.44
         }
       ],
-      "perpQty": -237.10199999999983,
+      "perpQty": -222.91199999999992,
       "perpEntry": 1.1319,
       "realizedHedgePnlUSD": -85.44442451999983,
       "premiumCollectedUSD": 647.58,
-      "feesUSD": 19.281390927982184,
+      "feesUSD": 19.29500523180795,
       "realizedPnlUSD": 0,
       "cycles": 0,
       "lastSpot": 1.1319,
-      "lastTickMs": 1781463481824
+      "lastTickMs": 1781468155434
     },
     "AVAX": {
       "sym": "AVAX",
@@ -206,15 +206,15 @@
           "entryIV": 87.2
         }
       ],
-      "perpQty": -258.58768,
-      "perpEntry": 6.396,
-      "realizedHedgePnlUSD": -58.098964039999956,
+      "perpQty": -235.80700000000002,
+      "perpEntry": 6.426,
+      "realizedHedgePnlUSD": -65.85659444000002,
       "premiumCollectedUSD": 693.498,
-      "feesUSD": 19.834086293613005,
+      "feesUSD": 19.946545534992165,
       "realizedPnlUSD": 0,
       "cycles": 0,
-      "lastSpot": 6.396,
-      "lastTickMs": 1781463482207
+      "lastSpot": 6.426,
+      "lastTickMs": 1781468155821
     },
     "TRX": {
       "sym": "TRX",
@@ -249,15 +249,15 @@
           "entryIV": 59.74
         }
       ],
-      "perpQty": -6675.520000000001,
-      "perpEntry": 0.31876,
-      "realizedHedgePnlUSD": -37.21063224800029,
+      "perpQty": -6877.3679999999995,
+      "perpEntry": 0.318592,
+      "realizedHedgePnlUSD": -36.08914488800028,
       "premiumCollectedUSD": 323.84000000000003,
-      "feesUSD": 23.190063538325344,
+      "feesUSD": 23.260166408048654,
       "realizedPnlUSD": 0,
       "cycles": 0,
-      "lastSpot": 0.31876,
-      "lastTickMs": 1781463482589
+      "lastSpot": 0.318592,
+      "lastTickMs": 1781468156207
     }
   },
   "history": [
@@ -991,6 +991,18 @@
         "XRP": 10087.74,
         "AVAX": 9995.79,
         "TRX": 10061.09
+      }
+    },
+    {
+      "ts": "2026-06-14T20:15:56.207Z",
+      "total": 60331.97,
+      "per": {
+        "BTC": 10021.99,
+        "ETH": 10066.04,
+        "SOL": 10098.36,
+        "XRP": 10089.28,
+        "AVAX": 9995.35,
+        "TRX": 10060.95
       }
     }
   ]

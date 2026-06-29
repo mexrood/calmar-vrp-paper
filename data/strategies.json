@@ -1,19 +1,19 @@
 {
   "startedAt": "2026-06-09T00:58:55.882Z",
   "carry": {
-    "equity": 10006.202337604653,
-    "lastTickMs": 1782766965836,
+    "equity": 10014.689080013328,
+    "lastTickMs": 1782771536960,
     "meta": {
-      "lastRatio": 0.9996295,
+      "lastRatio": 1.000476,
       "cumFunding": 0,
-      "cumStaking": 17.125475209284623,
-      "cumDepeg": -2.3604000000010448,
-      "cumCost": -8.562737604642312
+      "cumStaking": 17.16896002663622,
+      "cumDepeg": 6.104599999998678,
+      "cumCost": -8.58448001331811
     }
   },
   "lending": {
-    "equity": 10020.57156971878,
-    "lastTickMs": 1782766965836,
+    "equity": 10020.623858845716,
+    "lastTickMs": 1782771536960,
     "meta": {}
   },
   "history": [
@@ -1435,6 +1435,13 @@
       "ts": "2026-06-29T21:02:45.836Z",
       "carry": 10006.2,
       "lending": 10020.57,
+      "fundingAnn": 0,
+      "lendApy": 3.6
+    },
+    {
+      "ts": "2026-06-29T22:18:56.960Z",
+      "carry": 10014.69,
+      "lending": 10020.62,
       "fundingAnn": 0,
       "lendApy": 3.6
     }

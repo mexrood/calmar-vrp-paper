@@ -34,15 +34,15 @@
           "entryIV": 63.91
         }
       ],
-      "perpQty": 0.014722463,
-      "perpEntry": 62613.42,
-      "realizedHedgePnlUSD": -149.34292727346985,
+      "perpQty": 0.017709573000000003,
+      "perpEntry": 62820.04,
+      "realizedHedgePnlUSD": -146.3009719684098,
       "premiumCollectedUSD": 558.026207865,
-      "feesUSD": 31.848126141603707,
+      "feesUSD": 31.988544363307586,
       "realizedPnlUSD": -28.26192961593584,
       "cycles": 1,
-      "lastSpot": 62613.42,
-      "lastTickMs": 1783604179936
+      "lastSpot": 62820.04,
+      "lastTickMs": 1783613668706
     },
     "ETH": {
       "sym": "ETH",
@@ -77,15 +77,15 @@
           "entryIV": 73.78
         }
       ],
-      "perpQty": 1.439122,
-      "perpEntry": 1738.92,
-      "realizedHedgePnlUSD": -89.30105585499986,
+      "perpQty": 1.4355815,
+      "perpEntry": 1737.64,
+      "realizedHedgePnlUSD": -91.14313201499982,
       "premiumCollectedUSD": 759.93009125,
-      "feesUSD": 32.116640186506636,
+      "feesUSD": 32.19557355611158,
       "realizedPnlUSD": -23.972428654916392,
       "cycles": 1,
-      "lastSpot": 1738.92,
-      "lastTickMs": 1783604180297
+      "lastSpot": 1737.64,
+      "lastTickMs": 1783613669071
     },
     "SOL": {
       "sym": "SOL",
@@ -120,15 +120,15 @@
           "entryIV": 74.02
         }
       ],
-      "perpQty": 53.482884,
-      "perpEntry": 77.6087,
-      "realizedHedgePnlUSD": 102.78436605189995,
+      "perpQty": 53.10486999999999,
+      "perpEntry": 77.56,
+      "realizedHedgePnlUSD": 100.17974960110013,
       "premiumCollectedUSD": 844.8699999999999,
-      "feesUSD": 37.726532554913085,
+      "feesUSD": 37.86893565680895,
       "realizedPnlUSD": -85.28456913404827,
       "cycles": 1,
-      "lastSpot": 77.6087,
-      "lastTickMs": 1783604180659
+      "lastSpot": 77.56,
+      "lastTickMs": 1783613669426
     },
     "XRP": {
       "sym": "XRP",
@@ -163,15 +163,15 @@
           "entryIV": 71.58
         }
       ],
-      "perpQty": 977.4480000000004,
-      "perpEntry": 1.0944,
-      "realizedHedgePnlUSD": -130.75221259999995,
+      "perpQty": 808.0904,
+      "perpEntry": 1.0888,
+      "realizedHedgePnlUSD": -136.2259214,
       "premiumCollectedUSD": 764.4999999999999,
-      "feesUSD": 30.30193074462519,
+      "feesUSD": 30.444590388886937,
       "realizedPnlUSD": 51.25036662519184,
       "cycles": 1,
-      "lastSpot": 1.0944,
-      "lastTickMs": 1783604181030
+      "lastSpot": 1.0888,
+      "lastTickMs": 1783613669788
     },
     "AVAX": {
       "sym": "AVAX",
@@ -206,15 +206,15 @@
           "entryIV": 72.03
         }
       ],
-      "perpQty": 265.52125,
+      "perpQty": 265.9374999999999,
       "perpEntry": 6.726,
       "realizedHedgePnlUSD": -167.32376799999994,
       "premiumCollectedUSD": 857.475,
-      "feesUSD": 33.306519758658574,
+      "feesUSD": 33.36193470860386,
       "realizedPnlUSD": -110.79965155342212,
       "cycles": 1,
       "lastSpot": 6.726,
-      "lastTickMs": 1783604181392
+      "lastTickMs": 1783613670137
     },
     "TRX": {
       "sym": "TRX",
@@ -249,15 +249,15 @@
           "entryIV": 41.83
         }
       ],
-      "perpQty": 1520.6100000000004,
-      "perpEntry": 0.331245,
-      "realizedHedgePnlUSD": -42.490950319999996,
+      "perpQty": 1541.1760000000002,
+      "perpEntry": 0.331267,
+      "realizedHedgePnlUSD": -42.457496900000045,
       "premiumCollectedUSD": 392.21,
-      "feesUSD": 25.109816107022308,
+      "feesUSD": 25.129060270751566,
       "realizedPnlUSD": 86.26303709393707,
       "cycles": 1,
-      "lastSpot": 0.331245,
-      "lastTickMs": 1783604181751
+      "lastSpot": 0.331267,
+      "lastTickMs": 1783613670488
     }
   },
   "history": [
@@ -4135,6 +4135,18 @@
         "XRP": 10046.99,
         "AVAX": 9801.98,
         "TRX": 10145.44
+      }
+    },
+    {
+      "ts": "2026-07-09T16:14:30.488Z",
+      "total": 59708.12,
+      "per": {
+        "BTC": 9925.44,
+        "ETH": 9960.62,
+        "SOL": 9815.27,
+        "XRP": 10052.49,
+        "AVAX": 9806.91,
+        "TRX": 10147.39
       }
     }
   ]

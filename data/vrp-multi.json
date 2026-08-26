@@ -34,15 +34,15 @@
           "entryIV": 55.65
         }
       ],
-      "perpQty": 0.09179844000000001,
-      "perpEntry": 78555.48,
-      "realizedHedgePnlUSD": 825.6107667273004,
+      "perpQty": 0.09195282,
+      "perpEntry": 78657.85,
+      "realizedHedgePnlUSD": 835.0081730301014,
       "premiumCollectedUSD": 443.93359535999997,
-      "feesUSD": 65.25741262254232,
+      "feesUSD": 65.34524507424433,
       "realizedPnlUSD": -60.517487384760955,
       "cycles": 2,
-      "lastSpot": 78555.48,
-      "lastTickMs": 1787702230816
+      "lastSpot": 78657.85,
+      "lastTickMs": 1787705748656
     },
     "ETH": {
       "sym": "ETH",
@@ -77,15 +77,15 @@
           "entryIV": 62.08
         }
       ],
-      "perpQty": 3.0859921999999997,
-      "perpEntry": 2442.18,
-      "realizedHedgePnlUSD": 1150.8172612320009,
+      "perpQty": 3.0880892999999996,
+      "perpEntry": 2448.46,
+      "realizedHedgePnlUSD": 1170.1972922480015,
       "premiumCollectedUSD": 635.0772065799999,
-      "feesUSD": 59.52199774477363,
+      "feesUSD": 59.60936965089823,
       "realizedPnlUSD": -25.92980434987627,
       "cycles": 2,
-      "lastSpot": 2442.18,
-      "lastTickMs": 1787702231217
+      "lastSpot": 2448.46,
+      "lastTickMs": 1787705749255
     },
     "SOL": {
       "sym": "SOL",
@@ -120,15 +120,15 @@
           "entryIV": 66.57
         }
       ],
-      "perpQty": 80.46054,
-      "perpEntry": 96.6405,
-      "realizedHedgePnlUSD": 1301.3260362540002,
+      "perpQty": 80.52047999999999,
+      "perpEntry": 96.8021,
+      "realizedHedgePnlUSD": 1314.3284595179996,
       "premiumCollectedUSD": 664.1999999999999,
-      "feesUSD": 73.59091835446097,
+      "feesUSD": 73.68128840976152,
       "realizedPnlUSD": 38.21694178968917,
       "cycles": 2,
-      "lastSpot": 96.6405,
-      "lastTickMs": 1787702231614
+      "lastSpot": 96.8021,
+      "lastTickMs": 1787705749664
     },
     "XRP": {
       "sym": "XRP",
@@ -163,15 +163,15 @@
           "entryIV": 64
         }
       ],
-      "perpQty": 5318.676,
-      "perpEntry": 1.4341,
-      "realizedHedgePnlUSD": 1160.698650599998,
+      "perpQty": 5327.056500000001,
+      "perpEntry": 1.4339,
+      "realizedHedgePnlUSD": 1159.6349153999981,
       "premiumCollectedUSD": 599.4,
-      "feesUSD": 82.6622976847038,
+      "feesUSD": 82.75458596431153,
       "realizedPnlUSD": 367.7445854946632,
       "cycles": 2,
-      "lastSpot": 1.4341,
-      "lastTickMs": 1787702232009
+      "lastSpot": 1.4339,
+      "lastTickMs": 1787705750063
     },
     "AVAX": {
       "sym": "AVAX",
@@ -206,15 +206,15 @@
           "entryIV": 67.24
         }
       ],
-      "perpQty": 887.18714,
-      "perpEntry": 7.328,
-      "realizedHedgePnlUSD": 104.67921940000049,
+      "perpQty": 894.7189299999999,
+      "perpEntry": 7.36,
+      "realizedHedgePnlUSD": 133.0692078800005,
       "premiumCollectedUSD": 696.8535,
-      "feesUSD": 78.59804846228543,
+      "feesUSD": 78.70415211811124,
       "realizedPnlUSD": -32.38141340085737,
       "cycles": 2,
-      "lastSpot": 7.328,
-      "lastTickMs": 1787702232405
+      "lastSpot": 7.36,
+      "lastTickMs": 1787705750463
     },
     "TRX": {
       "sym": "TRX",
@@ -249,30 +249,18 @@
           "entryIV": 41.58
         }
       ],
-      "perpQty": 12365.310000000001,
-      "perpEntry": 0.336124,
-      "realizedHedgePnlUSD": -77.26141452600032,
+      "perpQty": 11530.098000000002,
+      "perpEntry": 0.335422,
+      "realizedHedgePnlUSD": -85.94186214600008,
       "premiumCollectedUSD": 293.71500000000003,
-      "feesUSD": 66.02573149935625,
+      "feesUSD": 66.24009004611588,
       "realizedPnlUSD": 243.9651476674631,
       "cycles": 2,
-      "lastSpot": 0.336124,
-      "lastTickMs": 1787702232796
+      "lastSpot": 0.335422,
+      "lastTickMs": 1787705750866
     }
   },
   "history": [
-    {
-      "ts": "2026-08-16T21:53:14.806Z",
-      "total": 61108.11,
-      "per": {
-        "BTC": 10032.32,
-        "ETH": 10167.91,
-        "SOL": 10246.47,
-        "XRP": 10467.13,
-        "AVAX": 9906.87,
-        "TRX": 10287.41
-      }
-    },
     {
       "ts": "2026-08-16T22:08:29.667Z",
       "total": 61122.34,
@@ -5059,6 +5047,18 @@
         "XRP": 10061.61,
         "AVAX": 9818.02,
         "TRX": 10260.99
+      }
+    },
+    {
+      "ts": "2026-08-26T00:55:50.866Z",
+      "total": 60117.27,
+      "per": {
+        "BTC": 9879.51,
+        "ETH": 9996.17,
+        "SOL": 10096.83,
+        "XRP": 10064.34,
+        "AVAX": 9819.12,
+        "TRX": 10261.3
       }
     }
   ]

@@ -3,276 +3,264 @@
   "books": {
     "BTC": {
       "sym": "BTC",
-      "qty": 0.0746,
-      "openedAt": "2026-08-27T16:47:23.626Z",
-      "expiry": 1790323200000,
-      "expiryDate": "2026-09-25",
-      "spotAtOpen": 80473.19,
+      "qty": 0.0718,
+      "openedAt": "2026-09-24T12:13:02.683Z",
+      "expiry": 1793347200000,
+      "expiryDate": "2026-10-30",
+      "spotAtOpen": 83541.12,
       "legs": [
         {
-          "name": "BTC-25SEP26-80000-C",
+          "name": "BTC-30OCT26-84000-C",
           "type": "call",
-          "strike": 80000,
+          "strike": 84000,
           "side": "short",
-          "entryUsd": 3902.949715,
-          "entryIV": 40.02
+          "entryUsd": 3592.2681599999996,
+          "entryIV": 34.89
         },
         {
-          "name": "BTC-25SEP26-80000-P",
+          "name": "BTC-30OCT26-84000-P",
           "type": "put",
-          "strike": 80000,
+          "strike": 84000,
           "side": "short",
-          "entryUsd": 3178.691005,
-          "entryIV": 40.02
+          "entryUsd": 3634.0387199999996,
+          "entryIV": 34.89
         },
         {
-          "name": "BTC-25SEP26-60000-P",
+          "name": "BTC-30OCT26-63000-P",
           "type": "put",
-          "strike": 60000,
+          "strike": 63000,
           "side": "long",
-          "entryUsd": 120.70978500000001,
-          "entryIV": 55.16
+          "entryUsd": 192.14457599999997,
+          "entryIV": 51.63
         }
       ],
-      "perpQty": 0.06565396800000001,
-      "perpEntry": 84189.36,
-      "realizedHedgePnlUSD": -233.41050569586,
-      "premiumCollectedUSD": 519.285447751,
-      "feesUSD": 54.7162147789875,
-      "realizedPnlUSD": -121.25507542911072,
-      "cycles": 3,
-      "lastSpot": 84189.36,
-      "lastTickMs": 1790232213407
+      "perpQty": 0.005257913999999997,
+      "perpEntry": 83541.12,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 505.0528534272,
+      "feesUSD": 10.910449253054207,
+      "realizedPnlUSD": -197.61683130901005,
+      "cycles": 4,
+      "lastSpot": 83541.12,
+      "lastTickMs": 1790251982683
     },
     "ETH": {
       "sym": "ETH",
-      "qty": 2.37,
-      "openedAt": "2026-08-27T16:47:24.283Z",
-      "expiry": 1790323200000,
-      "expiryDate": "2026-09-25",
-      "spotAtOpen": 2527.42,
+      "qty": 2.27,
+      "openedAt": "2026-09-24T12:13:03.370Z",
+      "expiry": 1793347200000,
+      "expiryDate": "2026-10-30",
+      "spotAtOpen": 2648.35,
       "legs": [
         {
-          "name": "ETH-25SEP26-2500-C",
+          "name": "ETH-30OCT26-2650-C",
           "type": "call",
-          "strike": 2500,
+          "strike": 2650,
           "side": "short",
-          "entryUsd": 169.33714,
-          "entryIV": 54.4
+          "entryUsd": 166.84605,
+          "entryIV": 49.79
         },
         {
-          "name": "ETH-25SEP26-2500-P",
+          "name": "ETH-30OCT26-2650-P",
           "type": "put",
-          "strike": 2500,
+          "strike": 2650,
           "side": "short",
-          "entryUsd": 132.68955,
-          "entryIV": 54.4
+          "entryUsd": 157.57682499999999,
+          "entryIV": 49.79
         },
         {
-          "name": "ETH-25SEP26-1900-P",
+          "name": "ETH-30OCT26-2000-P",
           "type": "put",
-          "strike": 1900,
+          "strike": 2000,
           "side": "long",
-          "entryUsd": 10.615164,
-          "entryIV": 65.82
+          "entryUsd": 13.24175,
+          "entryIV": 60.7
         }
       ],
-      "perpQty": 2.2265202000000004,
-      "perpEntry": 2689.22,
-      "realizedHedgePnlUSD": -240.13310089500035,
-      "premiumCollectedUSD": 690.6453166200001,
-      "feesUSD": 53.50370646075952,
-      "realizedPnlUSD": -2.0821814691613554,
-      "cycles": 3,
-      "lastSpot": 2689.22,
-      "lastTickMs": 1790232213835
+      "perpQty": 0.30645,
+      "perpEntry": 2648.35,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 706.3811537499998,
+      "feesUSD": 11.308110214499997,
+      "realizedPnlUSD": -48.25868472768749,
+      "cycles": 4,
+      "lastSpot": 2648.35,
+      "lastTickMs": 1790251983370
     },
     "SOL": {
       "sym": "SOL",
-      "qty": 55.2,
-      "openedAt": "2026-08-27T16:47:25.030Z",
-      "expiry": 1790323200000,
-      "expiryDate": "2026-09-25",
-      "spotAtOpen": 108.6531,
+      "qty": 52.8,
+      "openedAt": "2026-09-24T12:13:04.107Z",
+      "expiry": 1793347200000,
+      "expiryDate": "2026-10-30",
+      "spotAtOpen": 113.6189,
       "legs": [
         {
-          "name": "SOL_USDC-25SEP26-108-C",
+          "name": "SOL_USDC-30OCT26-114-C",
           "type": "call",
-          "strike": 108,
+          "strike": 114,
           "side": "short",
-          "entryUsd": 7.3,
-          "entryIV": 59.35
+          "entryUsd": 7.8,
+          "entryIV": 55.36
         },
         {
-          "name": "SOL_USDC-25SEP26-108-P",
+          "name": "SOL_USDC-30OCT26-114-P",
           "type": "put",
-          "strike": 108,
+          "strike": 114,
           "side": "short",
-          "entryUsd": 6.4,
-          "entryIV": 59.35
+          "entryUsd": 7.8,
+          "entryIV": 55.36
         },
         {
-          "name": "SOL_USDC-25SEP26-82-P",
+          "name": "SOL_USDC-30OCT26-86-P",
           "type": "put",
-          "strike": 82,
+          "strike": 86,
           "side": "long",
           "entryUsd": 0.8,
-          "entryIV": 70.79
+          "entryIV": 64.61
         }
       ],
-      "perpQty": 47.933472,
-      "perpEntry": 114.9366,
-      "realizedHedgePnlUSD": -453.5635684224002,
-      "premiumCollectedUSD": 712.0799999999999,
-      "feesUSD": 56.08285965133907,
-      "realizedPnlUSD": 91.82160056995262,
-      "cycles": 3,
-      "lastSpot": 114.9366,
-      "lastTickMs": 1790232214267
+      "perpQty": 7.0957919999999985,
+      "perpEntry": 113.6189,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 781.4399999999999,
+      "feesUSD": 11.28206990500128,
+      "realizedPnlUSD": -79.90682021411597,
+      "cycles": 4,
+      "lastSpot": 113.6189,
+      "lastTickMs": 1790251984107
     },
     "XRP": {
       "sym": "XRP",
-      "qty": 4080,
-      "openedAt": "2026-08-27T16:47:25.762Z",
-      "expiry": 1790323200000,
-      "expiryDate": "2026-09-25",
-      "spotAtOpen": 1.4708,
+      "qty": 4070,
+      "openedAt": "2026-09-24T12:13:04.792Z",
+      "expiry": 1793347200000,
+      "expiryDate": "2026-10-30",
+      "spotAtOpen": 1.4726,
       "legs": [
         {
-          "name": "XRP_USDC-25SEP26-1d45-C",
+          "name": "XRP_USDC-30OCT26-1d48-C",
           "type": "call",
-          "strike": 1.45,
+          "strike": 1.48,
           "side": "short",
-          "entryUsd": 0.001,
-          "entryIV": 65.66
+          "entryUsd": 0.1255,
+          "entryIV": 69.34
         },
         {
-          "name": "XRP_USDC-25SEP26-1d45-P",
+          "name": "XRP_USDC-30OCT26-1d48-P",
           "type": "put",
-          "strike": 1.45,
+          "strike": 1.48,
           "side": "short",
-          "entryUsd": 0.091,
-          "entryIV": 65.66
+          "entryUsd": 0.127,
+          "entryIV": 69.34
         },
         {
-          "name": "XRP_USDC-25SEP26-1d1-P",
+          "name": "XRP_USDC-30OCT26-1d1-P",
           "type": "put",
           "strike": 1.1,
           "side": "long",
-          "entryUsd": 0.0245,
-          "entryIV": 81.75
+          "entryUsd": 0.0175,
+          "entryIV": 76.86
         }
       ],
-      "perpQty": 2751.756,
-      "perpEntry": 1.5071,
-      "realizedHedgePnlUSD": -676.9410947999997,
-      "premiumCollectedUSD": 275.40000000000003,
-      "feesUSD": 55.01899904814482,
-      "realizedPnlUSD": 72.2431487412585,
-      "cycles": 3,
-      "lastSpot": 1.5071,
-      "lastTickMs": 1790232214697
+      "perpQty": 691.3709,
+      "perpEntry": 1.4726,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 956.4499999999999,
+      "feesUSD": 11.399135272403997,
+      "realizedPnlUSD": -572.8881405664094,
+      "cycles": 4,
+      "lastSpot": 1.4726,
+      "lastTickMs": 1790251984792
     },
     "AVAX": {
       "sym": "AVAX",
-      "qty": 795,
-      "openedAt": "2026-08-27T16:47:26.450Z",
-      "expiry": 1790323200000,
-      "expiryDate": "2026-09-25",
-      "spotAtOpen": 7.547,
+      "qty": 593,
+      "openedAt": "2026-09-24T12:13:05.488Z",
+      "expiry": 1793347200000,
+      "expiryDate": "2026-10-30",
+      "spotAtOpen": 10.125,
       "legs": [
         {
-          "name": "AVAX_USDC-25SEP26-7d5-C",
+          "name": "AVAX_USDC-30OCT26-10d2-C",
           "type": "call",
-          "strike": 7.5,
+          "strike": 10.2,
           "side": "short",
-          "entryUsd": 0.492,
-          "entryIV": 56.17
+          "entryUsd": 0.91,
+          "entryIV": 74.42
         },
         {
-          "name": "AVAX_USDC-25SEP26-7d5-P",
+          "name": "AVAX_USDC-30OCT26-10d2-P",
           "type": "put",
-          "strike": 7.5,
+          "strike": 10.2,
           "side": "short",
-          "entryUsd": 0.432,
-          "entryIV": 56.17
+          "entryUsd": 0.966,
+          "entryIV": 74.42
         },
         {
-          "name": "AVAX_USDC-25SEP26-5d5-P",
+          "name": "AVAX_USDC-30OCT26-7d6-P",
           "type": "put",
-          "strike": 5.5,
+          "strike": 7.6,
           "side": "long",
-          "entryUsd": 0.0345,
-          "entryIV": 70.36
+          "entryUsd": 0.148,
+          "entryIV": 81.52
         }
       ],
-      "perpQty": 794.6978999999999,
-      "perpEntry": 10.262,
-      "realizedHedgePnlUSD": 1317.4163227500005,
-      "premiumCollectedUSD": 707.1524999999999,
-      "feesUSD": 55.23930679178529,
-      "realizedPnlUSD": -182.65353913788107,
-      "cycles": 3,
-      "lastSpot": 10.262,
-      "lastTickMs": 1790232215128
+      "perpQty": 103.79279000000002,
+      "perpEntry": 10.125,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 1024.704,
+      "feesUSD": 11.437966199249999,
+      "realizedPnlUSD": -409.5788917914483,
+      "cycles": 4,
+      "lastSpot": 10.125,
+      "lastTickMs": 1790251985488
     },
     "TRX": {
       "sym": "TRX",
-      "qty": 17800,
-      "openedAt": "2026-08-27T16:47:27.186Z",
-      "expiry": 1790323200000,
-      "expiryDate": "2026-09-25",
-      "spotAtOpen": 0.337866,
+      "qty": 17700,
+      "openedAt": "2026-09-24T12:13:06.190Z",
+      "expiry": 1793347200000,
+      "expiryDate": "2026-10-30",
+      "spotAtOpen": 0.339538,
       "legs": [
         {
-          "name": "TRX_USDC-25SEP26-0d34-C",
+          "name": "TRX_USDC-30OCT26-0d34-C",
           "type": "call",
           "strike": 0.34,
           "side": "short",
-          "entryUsd": 0.00765,
-          "entryIV": 22.86
+          "entryUsd": 0.00935,
+          "entryIV": 22.74
         },
         {
-          "name": "TRX_USDC-25SEP26-0d34-P",
+          "name": "TRX_USDC-30OCT26-0d34-P",
           "type": "put",
           "strike": 0.34,
           "side": "short",
-          "entryUsd": 0.00955,
-          "entryIV": 22.86
+          "entryUsd": 0.0098,
+          "entryIV": 22.74
         },
         {
-          "name": "TRX_USDC-25SEP26-0d25-P",
+          "name": "TRX_USDC-30OCT26-0d25-P",
           "type": "put",
           "strike": 0.25,
           "side": "long",
-          "entryUsd": 0.00010816,
-          "entryIV": 45.11
+          "entryUsd": 0.0002,
+          "entryIV": 43.65
         }
       ],
-      "perpQty": 9597.403999999999,
-      "perpEntry": 0.342947,
-      "realizedHedgePnlUSD": -190.43433809600026,
-      "premiumCollectedUSD": 304.234752,
-      "feesUSD": 55.27719054493812,
-      "realizedPnlUSD": 254.13524027824286,
-      "cycles": 3,
-      "lastSpot": 0.342947,
-      "lastTickMs": 1790232215557
+      "perpQty": 445.6860000000005,
+      "perpEntry": 0.339538,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 335.415,
+      "feesUSD": 8.1875835198408,
+      "realizedPnlUSD": 265.93154891271513,
+      "cycles": 4,
+      "lastSpot": 0.339538,
+      "lastTickMs": 1790251986190
     }
   },
   "history": [
-    {
-      "ts": "2026-08-21T21:19:00.290Z",
-      "total": 60230.61,
-      "per": {
-        "BTC": 9887.86,
-        "ETH": 10003.85,
-        "SOL": 10121,
-        "XRP": 10107.86,
-        "AVAX": 9842.28,
-        "TRX": 10267.76
-      }
-    },
     {
       "ts": "2026-08-21T21:44:54.818Z",
       "total": 60208.09,
@@ -5059,6 +5047,18 @@
         "XRP": 9337.02,
         "AVAX": 9591.68,
         "TRX": 10233.48
+      }
+    },
+    {
+      "ts": "2026-09-24T12:13:06.190Z",
+      "total": 58957.67,
+      "per": {
+        "BTC": 9802.38,
+        "ETH": 9951.74,
+        "SOL": 9920.09,
+        "XRP": 9427.11,
+        "AVAX": 9590.42,
+        "TRX": 10265.93
       }
     }
   ]

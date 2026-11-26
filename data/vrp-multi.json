@@ -3,89 +3,89 @@
   "books": {
     "BTC": {
       "sym": "BTC",
-      "qty": 0.075,
-      "openedAt": "2026-10-29T09:02:52.175Z",
-      "expiry": 1795766400000,
-      "expiryDate": "2026-11-27",
-      "spotAtOpen": 80009.8,
+      "qty": 0.099,
+      "openedAt": "2026-11-26T12:18:14.970Z",
+      "expiry": 1798185600000,
+      "expiryDate": "2026-12-25",
+      "spotAtOpen": 60594.28,
       "legs": [
         {
-          "name": "BTC-27NOV26-80000-C",
+          "name": "BTC-25DEC26-60000-C",
           "type": "call",
-          "strike": 80000,
+          "strike": 60000,
           "side": "short",
-          "entryUsd": 3280.4018,
-          "entryIV": 34.77
+          "entryUsd": 3696.25108,
+          "entryIV": 49.16
         },
         {
-          "name": "BTC-27NOV26-80000-P",
-          "type": "put",
-          "strike": 80000,
-          "side": "short",
-          "entryUsd": 2920.3577,
-          "entryIV": 34.77
-        },
-        {
-          "name": "BTC-27NOV26-60000-P",
+          "name": "BTC-25DEC26-60000-P",
           "type": "put",
           "strike": 60000,
+          "side": "short",
+          "entryUsd": 2908.52544,
+          "entryIV": 49.16
+        },
+        {
+          "name": "BTC-25DEC26-45000-P",
+          "type": "put",
+          "strike": 45000,
           "side": "long",
-          "entryUsd": 104.01274,
-          "entryIV": 52.55
+          "entryUsd": 284.793116,
+          "entryIV": 70.05
         }
       ],
-      "perpQty": -0.04833675,
-      "perpEntry": 60615.18,
-      "realizedHedgePnlUSD": 674.5004519100002,
-      "premiumCollectedUSD": 457.256007,
-      "feesUSD": 48.64876735769431,
-      "realizedPnlUSD": -136.18639112157598,
-      "cycles": 5,
-      "lastSpot": 60615.18,
-      "lastTickMs": 1795662280994
+      "perpQty": 0.01805661,
+      "perpEntry": 60594.28,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 625.6783569959999,
+      "feesUSD": 11.454377065314478,
+      "realizedPnlUSD": -508.7753181391703,
+      "cycles": 6,
+      "lastSpot": 60594.28,
+      "lastTickMs": 1795695494970
     },
     "ETH": {
       "sym": "ETH",
-      "qty": 2.59,
-      "openedAt": "2026-10-29T09:02:52.545Z",
-      "expiry": 1795766400000,
-      "expiryDate": "2026-11-27",
-      "spotAtOpen": 2317.57,
+      "qty": 3.53,
+      "openedAt": "2026-11-26T12:18:16.099Z",
+      "expiry": 1798185600000,
+      "expiryDate": "2026-12-25",
+      "spotAtOpen": 1700.59,
       "legs": [
         {
-          "name": "ETH-27NOV26-2300-C",
+          "name": "ETH-25DEC26-1700-C",
           "type": "call",
-          "strike": 2300,
+          "strike": 1700,
           "side": "short",
-          "entryUsd": 135.57784500000002,
-          "entryIV": 47.96
+          "entryUsd": 118.191005,
+          "entryIV": 61.59
         },
         {
-          "name": "ETH-27NOV26-2300-P",
+          "name": "ETH-25DEC26-1700-P",
           "type": "put",
-          "strike": 2300,
+          "strike": 1700,
           "side": "short",
-          "entryUsd": 111.24336000000001,
-          "entryIV": 47.96
+          "entryUsd": 113.93953,
+          "entryIV": 61.59
         },
         {
-          "name": "ETH-27NOV26-1800-P",
+          "name": "ETH-25DEC26-1300-P",
           "type": "put",
-          "strike": 1800,
+          "strike": 1300,
           "side": "long",
-          "entryUsd": 12.746635,
-          "entryIV": 62.61
+          "entryUsd": 16.155604999999998,
+          "entryIV": 76.57
         }
       ],
-      "perpQty": -0.1937061,
-      "perpEntry": 1694.69,
-      "realizedHedgePnlUSD": 347.1995699199999,
-      "premiumCollectedUSD": 606.2531363,
-      "feesUSD": 36.60172423377472,
-      "realizedPnlUSD": -53.26865404249389,
-      "cycles": 5,
-      "lastSpot": 1694.69,
-      "lastTickMs": 1795662281812
+      "perpQty": 0.5894040999999998,
+      "perpEntry": 1700.59,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 762.3915029,
+      "feesUSD": 11.406949691051397,
+      "realizedPnlUSD": -432.7928803769589,
+      "cycles": 6,
+      "lastSpot": 1700.59,
+      "lastTickMs": 1795695496099
     },
     "SOL": {
       "sym": "SOL",
@@ -120,15 +120,15 @@
           "entryIV": 65.36
         }
       ],
-      "perpQty": -6.0690680000000015,
-      "perpEntry": 71.017,
-      "realizedHedgePnlUSD": 469.91249104329967,
+      "perpQty": 0,
+      "perpEntry": 70.7583,
+      "realizedHedgePnlUSD": 471.4825589348996,
       "premiumCollectedUSD": 670.88,
-      "feesUSD": 36.33146321375191,
-      "realizedPnlUSD": -121.38094753744977,
-      "cycles": 5,
-      "lastSpot": 71.017,
-      "lastTickMs": 1795662285030
+      "feesUSD": 36.63435029621241,
+      "realizedPnlUSD": -453.2527388987627,
+      "cycles": 6,
+      "lastSpot": 70.7583,
+      "lastTickMs": 1795695496266
     },
     "XRP": {
       "sym": "XRP",
@@ -163,58 +163,58 @@
           "entryIV": 68.89
         }
       ],
-      "perpQty": -2600.001,
-      "perpEntry": 0.95417,
-      "realizedHedgePnlUSD": 539.9204405550003,
+      "perpQty": -4650,
+      "perpEntry": 0.95029,
+      "realizedHedgePnlUSD": 550.0084444350002,
       "premiumCollectedUSD": 695.175,
-      "feesUSD": 41.91777844698853,
-      "realizedPnlUSD": -431.7526916585118,
-      "cycles": 5,
-      "lastSpot": 0.95417,
-      "lastTickMs": 1795662287847
+      "feesUSD": 43.346832236028476,
+      "realizedPnlUSD": -856.0675794595403,
+      "cycles": 6,
+      "lastSpot": 0.95029,
+      "lastTickMs": 1795695498722
     },
     "AVAX": {
       "sym": "AVAX",
-      "qty": 690,
-      "openedAt": "2026-10-29T09:02:53.700Z",
-      "expiry": 1795766400000,
-      "expiryDate": "2026-11-27",
-      "spotAtOpen": 8.698,
+      "qty": 904,
+      "openedAt": "2026-11-26T12:18:23.066Z",
+      "expiry": 1798185600000,
+      "expiryDate": "2026-12-25",
+      "spotAtOpen": 6.638,
       "legs": [
         {
-          "name": "AVAX_USDC-27NOV26-8d6-C",
+          "name": "AVAX_USDC-25DEC26-6d6-C",
           "type": "call",
-          "strike": 8.6,
+          "strike": 6.6,
           "side": "short",
-          "entryUsd": 0.668,
-          "entryIV": 62.48
+          "entryUsd": 0.6,
+          "entryIV": 77.16
         },
         {
-          "name": "AVAX_USDC-27NOV26-8d6-P",
+          "name": "AVAX_USDC-25DEC26-6d6-P",
           "type": "put",
-          "strike": 8.6,
+          "strike": 6.6,
           "side": "short",
-          "entryUsd": 0.548,
-          "entryIV": 62.48
+          "entryUsd": 0.54,
+          "entryIV": 77.16
         },
         {
-          "name": "AVAX_USDC-27NOV26-6d5-P",
+          "name": "AVAX_USDC-25DEC26-5-P",
           "type": "put",
-          "strike": 6.5,
+          "strike": 5,
           "side": "long",
-          "entryUsd": 0.06,
-          "entryIV": 74.46
+          "entryUsd": 0.098,
+          "entryIV": 90.45
         }
       ],
-      "perpQty": -497.71080000000006,
-      "perpEntry": 6.665,
-      "realizedHedgePnlUSD": -2.4752301000008536,
-      "premiumCollectedUSD": 797.6400000000001,
-      "feesUSD": 45.40153275005044,
-      "realizedPnlUSD": -608.4098499707882,
-      "cycles": 5,
-      "lastSpot": 6.665,
-      "lastTickMs": 1795662291069
+      "perpQty": 202.32424,
+      "perpEntry": 6.638,
+      "realizedHedgePnlUSD": 0,
+      "premiumCollectedUSD": 941.9680000000001,
+      "feesUSD": 11.607170583071998,
+      "realizedPnlUSD": -1200.1021889691303,
+      "cycles": 6,
+      "lastSpot": 6.638,
+      "lastTickMs": 1795695503066
     },
     "TRX": {
       "sym": "TRX",
@@ -249,30 +249,18 @@
           "entryIV": 47.47
         }
       ],
-      "perpQty": -17981.264000000003,
-      "perpEntry": 0.303361,
-      "realizedHedgePnlUSD": -137.581504066999,
+      "perpQty": -18100,
+      "perpEntry": 0.30327,
+      "realizedHedgePnlUSD": -135.94520904299887,
       "premiumCollectedUSD": 277.83500000000004,
-      "feesUSD": 52.90139090478786,
-      "realizedPnlUSD": 361.61835723531976,
-      "cycles": 5,
-      "lastSpot": 0.303361,
-      "lastTickMs": 1795662293863
+      "feesUSD": 53.49724976959379,
+      "realizedPnlUSD": -33.802101577273504,
+      "cycles": 6,
+      "lastSpot": 0.30327,
+      "lastTickMs": 1795695503225
     }
   },
   "history": [
-    {
-      "ts": "2026-09-09T17:39:36.227Z",
-      "total": 59730.13,
-      "per": {
-        "BTC": 9886.32,
-        "ETH": 10045.94,
-        "SOL": 10092.68,
-        "XRP": 9609.8,
-        "AVAX": 9825,
-        "TRX": 10270.39
-      }
-    },
     {
       "ts": "2026-09-09T20:00:16.338Z",
       "total": 59724.36,
@@ -5059,6 +5047,18 @@
         "XRP": 9209.58,
         "AVAX": 8847.26,
         "TRX": 9971.51
+      }
+    },
+    {
+      "ts": "2026-11-26T12:18:25.442Z",
+      "total": 56515.21,
+      "per": {
+        "BTC": 9491.22,
+        "ETH": 9567.21,
+        "SOL": 9546.75,
+        "XRP": 9143.93,
+        "AVAX": 8799.9,
+        "TRX": 9966.2
       }
     }
   ]
